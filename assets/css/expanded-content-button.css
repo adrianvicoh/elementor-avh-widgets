@@ -1,0 +1,7 @@
+.expanded-content-text {
+    display: none;
+}
+
+.expanded-content-text--open {
+    display: block;
+}

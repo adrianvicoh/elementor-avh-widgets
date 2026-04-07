@@ -13,10 +13,10 @@ Text Domain:    elementor-avh-widgets
  */
 function register_new_widgets($widgets_manager)
 {
-    require_once __DIR__ . "/widgets/widget-1.php";
+    //require_once __DIR__ . "/widgets/widget-1.php";
     require_once __DIR__ . "/widgets/expanded-content-button.php";
 
-    $widgets_manager->register(new \Elementor_Widget_1());
+    //$widgets_manager->register(new \Elementor_Widget_1());
     $widgets_manager->register(new \Expanded_Content_Button());
 }
 add_action("elementor/widgets/register", "register_new_widgets");
@@ -42,15 +42,25 @@ add_action(
 function elementor_test_widgets_dependencies()
 {
     /* Scripts */
-    wp_register_script(
+    /*wp_register_script(
         "widget-script-1",
         plugins_url("assets/js/widget-script-1.js", __FILE__),
+    );*/
+
+    wp_register_script(
+        "expanded-content-button",
+        plugins_url("assets/js/expanded-content-button.js", __FILE__),
     );
 
     /* Styles */
-    wp_register_style(
+    /*wp_register_style(
         "widget-style-1",
         plugins_url("assets/css/widget-style-1.css", __FILE__),
+    );*/
+
+    wp_register_style(
+        "expanded-content-button",
+        plugins_url("assets/css/expanded-content-button.css", __FILE__),
     );
 }
 add_action("wp_enqueue_scripts", "elementor_test_widgets_dependencies");

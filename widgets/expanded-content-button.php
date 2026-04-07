@@ -39,6 +39,8 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
 
     protected function register_controls(): void
     {
+
+        /* Content Section */
         $this->start_controls_section(
             'content_section',
             [
@@ -47,95 +49,39 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
             ]
         );
 
+        /* Title Control */
         $this->add_control(
-            'title',
-            [
-                'type' => \Elementor\Controls_Manager::TEXT,
-                'label' => esc_html__('Title', 'textdomain'),
-                'placeholder' => esc_html__('Enter your title', 'textdomain'),
-            ]
+            'item_content',
+			[
+				'label' => esc_html__( 'Description', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::WYSIWYG,
+				'default' => esc_html__( 'Default content', 'textdomain' ),
+				'placeholder' => esc_html__( 'Type your content here', 'textdomain' ),
+			]
         );
 
+        /* SwitchContent Button */
         $this->add_control(
-            'size',
-            [
-                'type' => \Elementor\Controls_Manager::NUMBER,
-                'label' => esc_html__('Size', 'textdomain'),
-                'placeholder' => '0',
-                'min' => 0,
-                'max' => 100,
-                'step' => 1,
-                'default' => 50,
-            ]
-        );
+			'switch_content_button',
+			[
+				'label' => esc_html__( 'Switch Content', 'textdomain' ),
+				'type' => \Elementor\Controls_Manager::BUTTON,
+				'separator' => 'before',
+				'button_type' => 'success',
+				'text' => esc_html__( 'Switch Content', 'textdomain' ),
+				'event' => 'namespace:editor:switch',
+			]
+		);
 
-        $this->add_control(
-            'open_lightbox',
-            [
-                'type' => \Elementor\Controls_Manager::SELECT,
-                'label' => esc_html__('Lightbox', 'textdomain'),
-                'options' => [
-                    'default' => esc_html__('Default', 'textdomain'),
-                    'yes' => esc_html__('Yes', 'textdomain'),
-                    'no' => esc_html__('No', 'textdomain'),
-                ],
-                'default' => 'no',
-            ]
-        );
-
-        $this->add_control(
-            'alignment',
-            [
-                'type' => \Elementor\Controls_Manager::CHOOSE,
-                'label' => esc_html__('Alignment', 'textdomain'),
-                'options' => [
-                    'left' => [
-                        'title' => esc_html__('Left', 'textdomain'),
-                        'icon' => 'eicon-text-align-left',
-                    ],
-                    'center' => [
-                        'title' => esc_html__('Center', 'textdomain'),
-                        'icon' => 'eicon-text-align-center',
-                    ],
-                    'right' => [
-                        'title' => esc_html__('Right', 'textdomain'),
-                        'icon' => 'eicon-text-align-right',
-                    ],
-                ],
-                'default' => 'center',
-            ]
-        );
-
-        $this->add_control(
-            'image',
-            [
-                'label' => esc_html__('Choose Image', 'textdomain'),
-                'type' => \Elementor\Controls_Manager::MEDIA,
-                'default' => [
-                    'url' => \Elementor\Utils::get_placeholder_image_src(),
-                ],
-            ]
-        );
 
         $this->end_controls_section();
 
+        /* Style Section */
         $this->start_controls_section(
             'section_style',
             [
                 'label' => esc_html__('Style', 'textdomain'),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-            ]
-        );
-
-        $this->add_control(
-            'color',
-            [
-                'label' => esc_html__('Color', 'textdomain'),
-                'type' => \Elementor\Controls_Manager::COLOR,
-                'default' => '#f00',
-                'selectors' => [
-                    '{{WRAPPER}} h3' => 'color: {{VALUE}}',
-                ],
             ]
         );
 
@@ -146,45 +92,34 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
     {
         $settings = $this->get_settings_for_display();
 
-        if (empty($settings['title'])) {
-            return;
-        }
-?>
-        <h3>
-            <?php echo $settings['title']; ?>
-        </h3>
-    <?php
+		if ( empty( $settings['item_content'] ) ) {
+			return;
+		}
+		?>
+		<div class="expanded-content-text">
+			<?php echo $settings['item_content']; ?>
+		</div>
+        <button class="switch-content-button">
+            Switch Content
+        </button>
+		<?php
 
-        echo \Elementor\Group_Control_Image_Size::get_attachment_image_html($settings);
     }
 
     protected function content_template(): void
     {
-    ?>
-        <#
-            if ( ''===settings.title ) {
-            return;
-            }
-            #>
-            <h3>
-                {{{ settings.title }}}
-            </h3>
-            <#
-                const image={
-                id: settings.image.id,
-                url: settings.image.url,
-                size: settings.image_size,
-                dimension: settings.image_custom_dimension,
-                model: view.getEditModel()
-                };
-
-                const image_url=elementor.imagesManager.getImageUrl( image );
-
-                if ( ''===image_url ) {
-                return;
-                }
-                #>
-                <img src="{{{ image_url }}}">
-        <?php
+        ?>
+		<#
+		if ( '' === settings.item_content ) {
+			return;
+		}
+		#>
+		<div class="expanded-content-text">
+			{{{ settings.item_content }}}
+		</div>
+        <button class="switch-content-button">
+            Switch Content
+        </button>
+		<?php
     }
 }
