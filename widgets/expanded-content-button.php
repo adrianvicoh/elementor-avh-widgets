@@ -1,15 +1,15 @@
 <?php
-class Elementor_Widget_1 extends \Elementor\Widget_Base
+class Expanded_Content_Button extends \Elementor\Widget_Base
 {
 
     public function get_name(): string
     {
-        return 'widget_prova';
+        return 'expanded-content-button';
     }
 
     public function get_title(): string
     {
-        return esc_html__('Widget de prueba', 'textdomain');
+        return esc_html__('Expanded Content Button', 'textdomain');
     }
 
     public function get_icon(): string
@@ -29,7 +29,7 @@ class Elementor_Widget_1 extends \Elementor\Widget_Base
 
     public function get_custom_help_url(): string
     {
-        return 'https://wwwarcelona.com/';
+        return '';
     }
 
     protected function get_upsale_data(): array

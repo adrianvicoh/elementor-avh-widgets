@@ -14,8 +14,10 @@ Text Domain:    elementor-avh-widgets
 function register_new_widgets($widgets_manager)
 {
     require_once __DIR__ . "/widgets/widget-1.php";
+    require_once __DIR__ . "/widgets/expanded-content-button.php";
 
     $widgets_manager->register(new \Elementor_Widget_1());
+    $widgets_manager->register(new \Expanded_Content_Button());
 }
 add_action("elementor/widgets/register", "register_new_widgets");
 
@@ -24,8 +26,8 @@ add_action("elementor/widgets/register", "register_new_widgets");
  */
 function add_elementor_widget_categories($elements_manager)
 {
-    $elements_manager->add_category("AVH Widgets", [
-        "title" => esc_html__("elementor-avh-widgets", "textdomain"),
+    $elements_manager->add_category("elementor-avh-widgets", [
+        "title" => esc_html__("AVH Widgets", "textdomain"),
         "icon" => "fa fa-plug",
     ]);
 }
