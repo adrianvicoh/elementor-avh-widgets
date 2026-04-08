@@ -37,6 +37,14 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
         return [];
     }
 
+    public function get_script_depends(): array {
+		return [ 'expanded-content-button-script' ];
+	}
+
+	public function get_style_depends(): array {
+		return [ 'expanded-content-button-style' ];
+	}
+
     protected function register_controls(): void
     {
 
@@ -96,12 +104,14 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
 			return;
 		}
 		?>
-		<div class="expanded-content-text">
-			<?php echo $settings['item_content']; ?>
-		</div>
-        <button class="switch-content-button">
-            Switch Content
-        </button>
+        <div class="expanded-content-widget">   
+            <div class="expanded-content-text">
+                <?php echo $settings['item_content']; ?>
+            </div>
+            <button class="switch-content-button">
+                Switch Content
+            </button>
+        </div>
 		<?php
 
     }
@@ -114,12 +124,15 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
 			return;
 		}
 		#>
-		<div class="expanded-content-text">
-			{{{ settings.item_content }}}
-		</div>
-        <button class="switch-content-button">
-            Switch Content
-        </button>
+        <div class="expanded-content-widget">
+            <div class="expanded-content-text">
+                {{{ settings.item_content }}}
+            </div>
+            <button class="switch-content-button">
+                Switch Content
+            </button>
+        </div>
+		
 		<?php
     }
 }

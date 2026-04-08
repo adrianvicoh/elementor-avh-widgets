@@ -37,16 +37,16 @@ add_action(
 /**
  * Register scripts and styles for Elementor test widgets.
  */
-function elementor_test_widgets_dependencies()
+function elementor_avh_widgets_dependencies()
 {
     wp_register_script(
-        "expanded-content-button",
-        plugins_url("assets/js/expanded-content-button.js", __FILE__),
+        "expanded-content-button-script",
+        plugins_url("/assets/js/expanded-content-button.js", __FILE__),
     );
 
     wp_register_style(
-        "expanded-content-button",
-        plugins_url("assets/css/expanded-content-button.css", __FILE__),
+        "expanded-content-button-style",
+        plugins_url("/assets/css/expanded-content-button.css", __FILE__),
     );
 }
-add_action("wp_enqueue_scripts", "elementor_test_widgets_dependencies");
+add_action("wp_enqueue_scripts", "elementor_avh_widgets_dependencies");
