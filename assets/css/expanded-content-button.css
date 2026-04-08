@@ -1,3 +1,8 @@
+.expanded-content-widget {
+    display: flex !important;
+    background-color: red;
+}
+
 .expanded-content-text {
     display: none;
 }

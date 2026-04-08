@@ -68,20 +68,38 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
 			]
         );
 
-        /* SwitchContent Button */
+        /*Button position*/
         $this->add_control(
-			'switch_content_button',
-			[
-				'label' => esc_html__( 'Switch Content', 'textdomain' ),
-				'type' => \Elementor\Controls_Manager::BUTTON,
-				'separator' => 'before',
-				'button_type' => 'success',
-				'text' => esc_html__( 'Switch Content', 'textdomain' ),
-				'event' => 'namespace:editor:switch',
-			]
-		);
-
-
+            'button_position',
+            [
+                'label' => esc_html__( 'Button position', 'textdomain' ),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+				'options' => [
+					'row-reverse' => [
+						'title' => esc_html__( 'Left', 'textdomain' ),
+						'icon' => 'eicon-arrow-left',
+					],
+					'row' => [
+						'title' => esc_html__( 'Right', 'textdomain' ),
+						'icon' => 'eicon-arrow-right',
+					],
+					'column-reverse' => [
+						'title' => esc_html__( 'Up', 'textdomain' ),
+						'icon' => 'eicon-arrow-up',
+					],
+                    'column' => [
+						'title' => esc_html__( 'Down', 'textdomain' ),
+						'icon' => 'eicon-arrow-down',
+					],
+				],
+				'default' => 'down',
+				'toggle' => true,
+				'selectors' => [
+					'{{WRAPPER}} .expanded-content-widget' => 'flex-direction: {{VALUE}};',
+				],
+            ]
+        );
+        
         $this->end_controls_section();
 
         /* Style Section */
