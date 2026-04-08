@@ -1,6 +1,6 @@
 .expanded-content-widget {
-    display: flex !important;
-    background-color: red;
+    display: flex;
+
 }
 
 .expanded-content-text {

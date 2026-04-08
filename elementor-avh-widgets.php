@@ -39,14 +39,22 @@ add_action(
  */
 function elementor_avh_widgets_dependencies()
 {
+    $script_path = __DIR__ . "/assets/js/expanded-content-button.js";
+    $style_path = __DIR__ . "/assets/css/expanded-content-button.css";
+
     wp_register_script(
         "expanded-content-button-script",
         plugins_url("/assets/js/expanded-content-button.js", __FILE__),
+        [],
+        file_exists($script_path) ? filemtime($script_path) : false,
+        true,
     );
 
     wp_register_style(
         "expanded-content-button-style",
         plugins_url("/assets/css/expanded-content-button.css", __FILE__),
+        [],
+        file_exists($style_path) ? filemtime($style_path) : false,
     );
 }
 add_action("wp_enqueue_scripts", "elementor_avh_widgets_dependencies");
