@@ -311,7 +311,7 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
             #>
             <div class="expanded-content-widget-container">
                 <div class="expanded-content-main">
-                    <div class="expanded-content-hidden">
+                    <div class="expanded-content-wrapper">
                         {{{ settings.item_content }}}
                     </div>
                 </div>

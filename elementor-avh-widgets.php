@@ -58,3 +58,5 @@ function elementor_avh_widgets_dependencies()
     );
 }
 add_action("wp_enqueue_scripts", "elementor_avh_widgets_dependencies");
+add_action("elementor/frontend/after_register_scripts", "elementor_avh_widgets_dependencies");
+add_action("elementor/frontend/after_register_styles", "elementor_avh_widgets_dependencies");
