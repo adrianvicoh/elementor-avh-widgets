@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.expanded-content-widget').forEach(function (expandedContentButton) {
+    document.querySelectorAll('.expanded-content-widget-container').forEach(function (expandedContentButton) {
         var switchContentButton = expandedContentButton.querySelectorAll('.switch-content-button')[0];
-        var expandedContentText = expandedContentButton.querySelectorAll('.expanded-content-text')[0];
+        var expandedContentContainer = expandedContentButton.querySelectorAll('.expanded-content-main')[0];
         var isOpen = false;
         switchContentButton.addEventListener('click', function () {
             if (!isOpen) {
-                expandedContentText.classList.add('expanded-content-text--open');
+                expandedContentContainer.classList.add('expanded-content-main--open');
                 isOpen = true;
             } else {
-                expandedContentText.classList.remove('expanded-content-text--open');
+                expandedContentContainer.classList.remove('expanded-content-main--open');
                 isOpen = false;
             }
         });

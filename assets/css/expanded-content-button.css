@@ -1,12 +1,26 @@
-.expanded-content-widget {
+.expanded-content-widget-container {
     display: flex;
-
+    width: 100%;
 }
 
-.expanded-content-text {
+.expanded-content-widget-container .expanded-content-main {
+    width: 75%;
+}
+
+.expanded-content-widget-container .expanded-content-main .expanded-content-wrapper {
     display: none;
+    width: 100%;
 }
 
-.expanded-content-text--open {
+.expanded-content-widget-container .expanded-content-main--open .expanded-content-wrapper {
     display: block;
+}
+
+.expanded-content-widget-container .button-box-container {
+    display: flex;
+    width: 25%;
+}
+
+.expanded-content-widget-container .button-box-container a {
+    cursor: pointer;
 }
