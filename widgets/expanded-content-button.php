@@ -268,6 +268,698 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
             ]
         );
 
+        /* Widget container style */
+        $this->add_control(
+            'widget_container_style_heading',
+            [
+                'label' => esc_html__('Widget Container Styles', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'widget_container_background',
+                'types' => ['classic', 'gradient'],
+                'selector' => '{{WRAPPER}} .expanded-content-widget-container',
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Border::get_type(),
+            [
+                'name' => 'widget_container_border',
+                'selector' => '{{WRAPPER}} .expanded-content-widget-container',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'widget_container_border_radius',
+            [
+                'label' => esc_html__('Border Radius', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-widget-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'widget_container_padding',
+            [
+                'label' => esc_html__('Padding', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-widget-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'widget_container_margin',
+            [
+                'label' => esc_html__('Margin', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-widget-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'widget_container_gap',
+            [
+                'label' => esc_html__('Gap', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::SLIDER,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 200,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-widget-container' => 'gap: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'widget_container_box_shadow',
+                'selector' => '{{WRAPPER}} .expanded-content-widget-container',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'widget_container_horizontal_alignment',
+            [
+                'label' => esc_html__('Items Horizontal Alignment', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'flex-start' => [
+                        'title' => esc_html__('Start', 'textdomain'),
+                        'icon' => 'eicon-h-align-left',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'textdomain'),
+                        'icon' => 'eicon-h-align-center',
+                    ],
+                    'flex-end' => [
+                        'title' => esc_html__('End', 'textdomain'),
+                        'icon' => 'eicon-h-align-right',
+                    ],
+                    'space-between' => [
+                        'title' => esc_html__('Space Between', 'textdomain'),
+                        'icon' => 'eicon-justify-space-between-h',
+                    ],
+                    'space-around' => [
+                        'title' => esc_html__('Space Around', 'textdomain'),
+                        'icon' => 'eicon-justify-space-around-h',
+                    ],
+                    'space-evenly' => [
+                        'title' => esc_html__('Space Evenly', 'textdomain'),
+                        'icon' => 'eicon-justify-space-evenly-h',
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-widget-container' => 'justify-content: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'widget_container_vertical_alignment',
+            [
+                'label' => esc_html__('Items Vertical Alignment', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'flex-start' => [
+                        'title' => esc_html__('Top', 'textdomain'),
+                        'icon' => 'eicon-v-align-top',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Middle', 'textdomain'),
+                        'icon' => 'eicon-v-align-middle',
+                    ],
+                    'flex-end' => [
+                        'title' => esc_html__('Bottom', 'textdomain'),
+                        'icon' => 'eicon-v-align-bottom',
+                    ],
+                    'stretch' => [
+                        'title' => esc_html__('Stretch', 'textdomain'),
+                        'icon' => 'eicon-v-align-stretch',
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-widget-container' => 'align-items: {{VALUE}};',
+                ],
+            ]
+        );
+
+        /* Main and button section styles */
+        $this->add_control(
+            'sections_style_heading',
+            [
+                'label' => esc_html__('Main and Button Box Styles', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_control(
+            'expanded_main_style_heading',
+            [
+                'label' => esc_html__('Expanded Main Styles', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'expanded_main_background',
+                'types' => ['classic', 'gradient'],
+                'selector' => '{{WRAPPER}} .expanded-content-main',
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Border::get_type(),
+            [
+                'name' => 'expanded_main_border',
+                'selector' => '{{WRAPPER}} .expanded-content-main',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'expanded_main_border_radius',
+            [
+                'label' => esc_html__('Border Radius', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-main' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'expanded_main_padding',
+            [
+                'label' => esc_html__('Padding', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-main' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'expanded_main_margin',
+            [
+                'label' => esc_html__('Margin', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-main' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'expanded_main_box_shadow',
+                'selector' => '{{WRAPPER}} .expanded-content-main',
+            ]
+        );
+
+        $this->add_control(
+            'button_box_style_heading',
+            [
+                'label' => esc_html__('Button Box Container Styles', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'button_box_background',
+                'types' => ['classic', 'gradient'],
+                'selector' => '{{WRAPPER}} .button-box-container',
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Border::get_type(),
+            [
+                'name' => 'button_box_border',
+                'selector' => '{{WRAPPER}} .button-box-container',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'button_box_border_radius',
+            [
+                'label' => esc_html__('Border Radius', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .button-box-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'button_box_padding',
+            [
+                'label' => esc_html__('Padding', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .button-box-container' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'button_box_margin',
+            [
+                'label' => esc_html__('Margin', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .button-box-container' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'button_box_container_shadow',
+                'selector' => '{{WRAPPER}} .button-box-container',
+            ]
+        );
+
+        /* Button style */
+        $this->add_control(
+            'button_style_heading',
+            [
+                'label' => esc_html__('Button Styles', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'button_typography',
+                'selector' => '{{WRAPPER}} .switch-content-button, {{WRAPPER}} .switch-content-button .elementor-button-text',
+            ]
+        );
+
+        $this->start_controls_tabs('button_style_tabs');
+
+        $this->start_controls_tab(
+            'button_style_tab_normal',
+            [
+                'label' => esc_html__('Normal', 'textdomain'),
+            ]
+        );
+
+        $this->add_control(
+            'button_text_color',
+            [
+                'label' => esc_html__('Text Color', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .switch-content-button, {{WRAPPER}} .switch-content-button .elementor-button-text' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'button_background',
+                'types' => ['classic', 'gradient'],
+                'selector' => '{{WRAPPER}} .switch-content-button',
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Border::get_type(),
+            [
+                'name' => 'button_border',
+                'selector' => '{{WRAPPER}} .switch-content-button',
+            ]
+        );
+
+        $this->end_controls_tab();
+
+        $this->start_controls_tab(
+            'button_style_tab_hover',
+            [
+                'label' => esc_html__('Hover', 'textdomain'),
+            ]
+        );
+
+        $this->add_control(
+            'button_text_color_hover',
+            [
+                'label' => esc_html__('Text Color', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .switch-content-button:hover, {{WRAPPER}} .switch-content-button:hover .elementor-button-text' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'button_background_hover',
+                'types' => ['classic', 'gradient'],
+                'selector' => '{{WRAPPER}} .switch-content-button:hover',
+            ]
+        );
+
+        $this->add_control(
+            'button_border_color_hover',
+            [
+                'label' => esc_html__('Border Color', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .switch-content-button:hover' => 'border-color: {{VALUE}};',
+                ],
+                'condition' => [
+                    'button_border_border!' => '',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+        $this->end_controls_tabs();
+
+        $this->add_responsive_control(
+            'button_border_radius',
+            [
+                'label' => esc_html__('Border Radius', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .switch-content-button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'button_padding',
+            [
+                'label' => esc_html__('Padding', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .switch-content-button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'button_box_shadow',
+                'selector' => '{{WRAPPER}} .switch-content-button',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'button_content_horizontal_position',
+            [
+                'label' => esc_html__('Button Horizontal Position', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'flex-start' => [
+                        'title' => esc_html__('Left', 'textdomain'),
+                        'icon' => 'eicon-h-align-left',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'textdomain'),
+                        'icon' => 'eicon-h-align-center',
+                    ],
+                    'flex-end' => [
+                        'title' => esc_html__('Right', 'textdomain'),
+                        'icon' => 'eicon-h-align-right',
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .button-box-container .elementor-button-wrapper' => 'display:flex; justify-content: {{VALUE}};',
+                ],
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'button_content_vertical_position',
+            [
+                'label' => esc_html__('Button Vertical Position', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'flex-start' => [
+                        'title' => esc_html__('Top', 'textdomain'),
+                        'icon' => 'eicon-v-align-top',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Middle', 'textdomain'),
+                        'icon' => 'eicon-v-align-middle',
+                    ],
+                    'flex-end' => [
+                        'title' => esc_html__('Bottom', 'textdomain'),
+                        'icon' => 'eicon-v-align-bottom',
+                    ],
+                    'stretch' => [
+                        'title' => esc_html__('Stretch', 'textdomain'),
+                        'icon' => 'eicon-v-align-stretch',
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .button-box-container .elementor-button-wrapper' => 'display:flex; align-items: {{VALUE}}; min-height: 100%;',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'button_text_align',
+            [
+                'label' => esc_html__('Button Text Align', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'textdomain'),
+                        'icon' => 'eicon-text-align-left',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'textdomain'),
+                        'icon' => 'eicon-text-align-center',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'textdomain'),
+                        'icon' => 'eicon-text-align-right',
+                    ],
+                    'justify' => [
+                        'title' => esc_html__('Justified', 'textdomain'),
+                        'icon' => 'eicon-text-align-justify',
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .switch-content-button .elementor-button-content-wrapper' => 'text-align: {{VALUE}};',
+                ],
+            ]
+        );
+
+        /* Content style */
+        $this->add_control(
+            'content_style_heading',
+            [
+                'label' => esc_html__('Content Styles', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::HEADING,
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'content_typography',
+                'selector' => '{{WRAPPER}} .expanded-content-wrapper, {{WRAPPER}} .expanded-content-wrapper p',
+            ]
+        );
+
+        $this->add_control(
+            'content_text_color',
+            [
+                'label' => esc_html__('Text Color', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-wrapper, {{WRAPPER}} .expanded-content-wrapper p' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_control(
+            'content_link_color',
+            [
+                'label' => esc_html__('Link Color', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-wrapper a' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
+            [
+                'name' => 'content_background',
+                'types' => ['classic', 'gradient'],
+                'selector' => '{{WRAPPER}} .expanded-content-wrapper',
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Border::get_type(),
+            [
+                'name' => 'content_border',
+                'selector' => '{{WRAPPER}} .expanded-content-wrapper',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'content_border_radius',
+            [
+                'label' => esc_html__('Border Radius', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-wrapper' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'content_padding',
+            [
+                'label' => esc_html__('Padding', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        $this->add_group_control(
+            \Elementor\Group_Control_Box_Shadow::get_type(),
+            [
+                'name' => 'content_box_shadow',
+                'selector' => '{{WRAPPER}} .expanded-content-wrapper',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'content_horizontal_position',
+            [
+                'label' => esc_html__('Content Horizontal Position', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'flex-start' => [
+                        'title' => esc_html__('Left', 'textdomain'),
+                        'icon' => 'eicon-h-align-left',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'textdomain'),
+                        'icon' => 'eicon-h-align-center',
+                    ],
+                    'flex-end' => [
+                        'title' => esc_html__('Right', 'textdomain'),
+                        'icon' => 'eicon-h-align-right',
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-main .expanded-content-wrapper' => 'display:flex; justify-content: {{VALUE}};',
+                ],
+                'separator' => 'before',
+            ]
+        );
+
+        $this->add_responsive_control(
+            'content_vertical_position',
+            [
+                'label' => esc_html__('Content Vertical Position', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'flex-start' => [
+                        'title' => esc_html__('Top', 'textdomain'),
+                        'icon' => 'eicon-v-align-top',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Middle', 'textdomain'),
+                        'icon' => 'eicon-v-align-middle',
+                    ],
+                    'flex-end' => [
+                        'title' => esc_html__('Bottom', 'textdomain'),
+                        'icon' => 'eicon-v-align-bottom',
+                    ],
+                    'stretch' => [
+                        'title' => esc_html__('Stretch', 'textdomain'),
+                        'icon' => 'eicon-v-align-stretch',
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-main .expanded-content-wrapper' => 'display:flex; align-items: {{VALUE}}; min-height: 100%;',
+                ],
+            ]
+        );
+
+        $this->add_responsive_control(
+            'content_text_align',
+            [
+                'label' => esc_html__('Content Text Align', 'textdomain'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'left' => [
+                        'title' => esc_html__('Left', 'textdomain'),
+                        'icon' => 'eicon-text-align-left',
+                    ],
+                    'center' => [
+                        'title' => esc_html__('Center', 'textdomain'),
+                        'icon' => 'eicon-text-align-center',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'textdomain'),
+                        'icon' => 'eicon-text-align-right',
+                    ],
+                    'justify' => [
+                        'title' => esc_html__('Justified', 'textdomain'),
+                        'icon' => 'eicon-text-align-justify',
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .expanded-content-wrapper' => 'text-align: {{VALUE}};',
+                ],
+            ]
+        );
+
         $this->end_controls_section();
     }
 
