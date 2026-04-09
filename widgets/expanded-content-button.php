@@ -14,7 +14,7 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
 
     public function get_icon(): string
     {
-        return 'eicon-global-settings';
+        return 'eicon-dual-button';
     }
 
     public function get_categories(): array
@@ -896,7 +896,7 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
                     ],
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .expanded-content-main .expanded-content-wrapper' => 'display:flex; justify-content: {{VALUE}};',
+                    '{{WRAPPER}} .expanded-content-main ' => 'display:flex; justify-content: {{VALUE}};',
                 ],
                 'separator' => 'before',
             ]
@@ -926,7 +926,7 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
                     ],
                 ],
                 'selectors' => [
-                    '{{WRAPPER}} .expanded-content-main .expanded-content-wrapper' => 'display:flex; align-items: {{VALUE}}; min-height: 100%;',
+                    '{{WRAPPER}} .expanded-content-main ' => 'display:flex; align-items: {{VALUE}}; min-height: 100%;',
                 ],
             ]
         );
