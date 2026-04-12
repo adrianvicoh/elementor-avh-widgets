@@ -1,0 +1,49 @@
+/**
+ * Animated Carousel — slide widths (active > adjacent > outer). Fallbacks match PHP defaults.
+ */
+.elementor-widget-avh-animated-carousel {
+	--avh-ac-active-width: 54%;
+	--avh-ac-adjacent-width: 34%;
+	--avh-ac-outer-width: 20%;
+}
+
+.elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper > .swiper-slide {
+	width: var(--avh-ac-outer-width, 20%);
+	max-width: none;
+	flex-shrink: 0;
+	box-sizing: border-box;
+	transition: width 0.35s ease;
+}
+
+.elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper > .swiper-slide-prev,
+.elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper > .swiper-slide-next {
+	width: var(--avh-ac-adjacent-width, 34%);
+}
+
+.elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper > .swiper-slide-active {
+	width: var(--avh-ac-active-width, 54%);
+}
+
+.elementor-widget-avh-animated-carousel .e-n-carousel {
+	display: flex;
+	min-width: 0;
+}
+
+/* Slide inner container: flex so nested content can be laid out and edited reliably */
+.elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper > .swiper-slide > .e-con {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: stretch;
+	flex: 1 1 auto;
+	min-height: 0;
+	box-sizing: border-box;
+}
+
+.elementor-edit-mode .elementor-widget-avh-animated-carousel .e-n-carousel.swiper {
+	overflow: visible;
+}
+
+.elementor-edit-mode .elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper {
+	overflow: visible;
+}

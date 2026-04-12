@@ -9,29 +9,51 @@ Text Domain:    elementor-avh-widgets
 */
 
 /**
+ * Whether Animated Carousel (Nested Carousel child) can be registered.
+ */
+function avh_elementor_can_register_animated_carousel(): bool
+{
+    if (! defined('ELEMENTOR_PRO_VERSION')) {
+        return false;
+    }
+    if (! class_exists('\ElementorPro\Modules\NestedCarousel\Widgets\Nested_Carousel')) {
+        return false;
+    }
+    if (! class_exists('\ElementorPro\Plugin')) {
+        return false;
+    }
+    return \ElementorPro\Plugin::elementor()->experiments->is_feature_active('nested-elements', true);
+}
+
+/**
  * Register Elementor test widgets.
  */
 function register_new_widgets($widgets_manager)
 {
-    require_once __DIR__ . "/widgets/expanded-content-button.php";
+    require_once __DIR__ . '/widgets/expanded-content-button.php';
 
     $widgets_manager->register(new \Expanded_Content_Button());
+
+    if (avh_elementor_can_register_animated_carousel()) {
+        require_once __DIR__ . '/widgets/animated-carousel.php';
+        $widgets_manager->register(new \AVH_Animated_Carousel());
+    }
 }
-add_action("elementor/widgets/register", "register_new_widgets");
+add_action('elementor/widgets/register', 'register_new_widgets');
 
 /**
  * Register categories for Elementor test widgets.
  */
 function add_elementor_widget_categories($elements_manager)
 {
-    $elements_manager->add_category("elementor-avh-widgets", [
-        "title" => esc_html__("AVH Widgets", "textdomain"),
-        "icon" => "fa fa-plug",
+    $elements_manager->add_category('elementor-avh-widgets', [
+        'title' => esc_html__('AVH Widgets', 'elementor-avh-widgets'),
+        'icon' => 'fa fa-plug',
     ]);
 }
 add_action(
-    "elementor/elements/categories_registered",
-    "add_elementor_widget_categories",
+    'elementor/elements/categories_registered',
+    'add_elementor_widget_categories',
 );
 
 /**
@@ -39,24 +61,89 @@ add_action(
  */
 function elementor_avh_widgets_dependencies()
 {
-    $script_path = __DIR__ . "/assets/js/expanded-content-button.js";
-    $style_path = __DIR__ . "/assets/css/expanded-content-button.css";
+    $base = __DIR__;
+
+    $expanded_script = $base . '/assets/js/expanded-content-button.js';
+    $expanded_style = $base . '/assets/css/expanded-content-button.css';
 
     wp_register_script(
-        "expanded-content-button-script",
-        plugins_url("/assets/js/expanded-content-button.js", __FILE__),
+        'expanded-content-button-script',
+        plugins_url('/assets/js/expanded-content-button.js', __FILE__),
         [],
-        file_exists($script_path) ? filemtime($script_path) : false,
+        file_exists($expanded_script) ? filemtime($expanded_script) : false,
         true,
     );
 
     wp_register_style(
-        "expanded-content-button-style",
-        plugins_url("/assets/css/expanded-content-button.css", __FILE__),
+        'expanded-content-button-style',
+        plugins_url('/assets/css/expanded-content-button.css', __FILE__),
         [],
-        file_exists($style_path) ? filemtime($style_path) : false,
+        file_exists($expanded_style) ? filemtime($expanded_style) : false,
+    );
+
+    $ac_script = $base . '/assets/js/animated-carousel.js';
+    $ac_style = $base . '/assets/css/animated-carousel.css';
+
+    $ac_style_deps = ['e-swiper'];
+    if (wp_style_is('widget-nested-carousel', 'registered')) {
+        $ac_style_deps[] = 'widget-nested-carousel';
+    }
+
+    wp_register_script(
+        'avh-animated-carousel',
+        plugins_url('/assets/js/animated-carousel.js', __FILE__),
+        ['elementor-frontend', 'swiper'],
+        file_exists($ac_script) ? filemtime($ac_script) : false,
+        true,
+    );
+
+    wp_register_style(
+        'avh-animated-carousel',
+        plugins_url('/assets/css/animated-carousel.css', __FILE__),
+        $ac_style_deps,
+        file_exists($ac_style) ? filemtime($ac_style) : false,
     );
 }
-add_action("wp_enqueue_scripts", "elementor_avh_widgets_dependencies");
-add_action("elementor/frontend/after_register_scripts", "elementor_avh_widgets_dependencies");
-add_action("elementor/frontend/after_register_styles", "elementor_avh_widgets_dependencies");
+add_action('wp_enqueue_scripts', 'elementor_avh_widgets_dependencies');
+add_action('elementor/frontend/after_register_scripts', 'elementor_avh_widgets_dependencies', 20);
+add_action('elementor/frontend/after_register_styles', 'elementor_avh_widgets_dependencies', 20);
+
+/**
+ * Register editor script so the widget is a valid Nested Element (editable slide containers).
+ */
+function avh_register_animated_carousel_editor_script()
+{
+    if (! avh_elementor_can_register_animated_carousel()) {
+        return;
+    }
+    $path = __DIR__ . '/assets/js/animated-carousel-editor.js';
+    wp_register_script(
+        'avh-animated-carousel-editor',
+        plugins_url('/assets/js/animated-carousel-editor.js', __FILE__),
+        ['elementor-editor'],
+        file_exists($path) ? filemtime($path) : false,
+        true
+    );
+}
+add_action('elementor/init', 'avh_register_animated_carousel_editor_script');
+
+function avh_enqueue_animated_carousel_editor_script()
+{
+    if (! avh_elementor_can_register_animated_carousel()) {
+        return;
+    }
+    wp_enqueue_script('avh-animated-carousel-editor');
+}
+add_action('elementor/editor/before_enqueue_scripts', 'avh_enqueue_animated_carousel_editor_script', 25);
+
+/**
+ * Enqueue frontend CSS in the editor preview iframe too.
+ */
+function avh_enqueue_animated_carousel_editor_styles()
+{
+    if (wp_style_is('avh-animated-carousel', 'registered')) {
+        wp_enqueue_style('avh-animated-carousel');
+    }
+}
+add_action('elementor/editor/after_enqueue_styles', 'avh_enqueue_animated_carousel_editor_styles');
+add_action('elementor/preview/enqueue_styles', 'avh_enqueue_animated_carousel_editor_styles');
