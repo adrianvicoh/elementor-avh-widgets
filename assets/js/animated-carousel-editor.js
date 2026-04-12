@@ -1,16 +1,15 @@
 /**
- * Registers avh-animated-carousel as a Nested Element type in the Elementor editor.
+ * Registers avh-animated-carousel as a Nested Element type in the Elementor editor (same idea as Elementor Pro Nested Carousel).
  * Without this, slides cannot host editable container children.
  *
- * The core event "elementor/nested-element-type-loaded" is dispatched as a
- * native CustomEvent on window (not jQuery), so we must use addEventListener.
+ * Load order is enforced in PHP: this script depends on elementor-pro + nested-elements so NestedElementBase exists.
  */
 (function () {
 	'use strict';
 
 	var registered = false;
 	var retryTimer = null;
-	var maxRetries = 40;
+	var maxRetries = 120;
 	var retryCount = 0;
 
 	function registerType(NestedElementBase) {
@@ -25,11 +24,13 @@
 			return;
 		}
 
-		var AVHAnimatedCarousel = class extends NestedElementBase {
-			getType() {
-				return 'avh-animated-carousel';
-			}
-		};
+		var AVHAnimatedCarousel = (function (Base) {
+			return class extends Base {
+				getType() {
+					return 'avh-animated-carousel';
+				}
+			};
+		})(NestedElementBase);
 
 		elementor.elementsManager.registerElementType(new AVHAnimatedCarousel());
 		registered = true;
@@ -69,17 +70,31 @@
 		return false;
 	}
 
+	function startRetries() {
+		if (retryTimer) {
+			return;
+		}
+		retryTimer = setInterval(function () {
+			retryCount++;
+			if (registered || retryCount > maxRetries) {
+				clearInterval(retryTimer);
+				retryTimer = null;
+				return;
+			}
+			tryRegister();
+		}, 250);
+	}
+
 	window.addEventListener('elementor/nested-element-type-loaded', function () {
 		tryRegister();
 	});
 
-	retryTimer = setInterval(function () {
-		retryCount++;
-		if (registered || retryCount > maxRetries) {
-			clearInterval(retryTimer);
-			retryTimer = null;
-			return;
-		}
-		tryRegister();
-	}, 250);
+	if (typeof elementor !== 'undefined' && elementor.on) {
+		elementor.on('init', function () {
+			tryRegister();
+		});
+	}
+
+	tryRegister();
+	startRetries();
 })();

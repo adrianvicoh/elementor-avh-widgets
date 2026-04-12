@@ -220,6 +220,17 @@
 				'elementor/nested-container/atomic-repeater',
 				this.linkContainer.bind(this)
 			);
+			this.onResize = this.onResize.bind(this);
+			elementorFrontend.elements.$window.on(
+				'resize.avhAnimatedCarousel',
+				this.onResize
+			);
+		}
+
+		onResize() {
+			if (this.swiper && !this.swiper.destroyed) {
+				this.swiper.update();
+			}
 		}
 
 		shouldHideNavButtons($element, slides) {

@@ -30,11 +30,11 @@ class AVH_Animated_Carousel extends \ElementorPro\Modules\NestedCarousel\Widgets
 	}
 
 	public function get_style_depends(): array {
-		return array_merge( parent::get_style_depends(), [ 'avh-animated-carousel' ] );
+		return array_merge( parent::get_style_depends(), [ 'avh-animated-carousel-style' ] );
 	}
 
 	public function get_script_depends(): array {
-		return array_merge( parent::get_script_depends(), [ 'avh-animated-carousel' ] );
+		return array_merge( parent::get_script_depends(), [ 'avh-animated-carousel-script' ] );
 	}
 
 	protected function get_html_wrapper_class(): string {

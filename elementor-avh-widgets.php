@@ -2,7 +2,7 @@
 /*
 Plugin Name:    Elementor AVH Widgets
 Description:    WordPress plugin with extended widgets for Elementor
-Version:        0.0.1
+Version:        0.0.3
 Author:         Adrián Vico Hernández <adrian.vico.95@gmail.com>
 License:        GPL v2 or later
 Text Domain:    elementor-avh-widgets
@@ -90,15 +90,15 @@ function elementor_avh_widgets_dependencies()
     }
 
     wp_register_script(
-        'avh-animated-carousel',
+        'avh-animated-carousel-script',
         plugins_url('/assets/js/animated-carousel.js', __FILE__),
-        ['elementor-frontend', 'swiper'],
+        ['jquery', 'elementor-frontend', 'swiper'],
         file_exists($ac_script) ? filemtime($ac_script) : false,
         true,
     );
 
     wp_register_style(
-        'avh-animated-carousel',
+        'avh-animated-carousel-style',
         plugins_url('/assets/css/animated-carousel.css', __FILE__),
         $ac_style_deps,
         file_exists($ac_style) ? filemtime($ac_style) : false,
@@ -109,40 +109,36 @@ add_action('elementor/frontend/after_register_scripts', 'elementor_avh_widgets_d
 add_action('elementor/frontend/after_register_styles', 'elementor_avh_widgets_dependencies', 20);
 
 /**
- * Register editor script so the widget is a valid Nested Element (editable slide containers).
+ * Register and enqueue editor script so the widget is a valid Nested Element (editable slide containers).
+ *
+ * Must load after Elementor Pro editor and core `nested-elements` (NestedElementBase), otherwise
+ * registerElementType runs too early and slides stay empty.
  */
-function avh_register_animated_carousel_editor_script()
+function avh_register_and_enqueue_animated_carousel_editor_script()
 {
     if (! avh_elementor_can_register_animated_carousel()) {
         return;
     }
     $path = __DIR__ . '/assets/js/animated-carousel-editor.js';
+    $deps = ['elementor-editor', 'elementor-pro', 'nested-elements'];
     wp_register_script(
         'avh-animated-carousel-editor',
         plugins_url('/assets/js/animated-carousel-editor.js', __FILE__),
-        ['elementor-editor'],
+        $deps,
         file_exists($path) ? filemtime($path) : false,
         true
     );
-}
-add_action('elementor/init', 'avh_register_animated_carousel_editor_script');
-
-function avh_enqueue_animated_carousel_editor_script()
-{
-    if (! avh_elementor_can_register_animated_carousel()) {
-        return;
-    }
     wp_enqueue_script('avh-animated-carousel-editor');
 }
-add_action('elementor/editor/before_enqueue_scripts', 'avh_enqueue_animated_carousel_editor_script', 25);
+add_action('elementor/editor/before_enqueue_scripts', 'avh_register_and_enqueue_animated_carousel_editor_script', 100);
 
 /**
  * Enqueue frontend CSS in the editor preview iframe too.
  */
 function avh_enqueue_animated_carousel_editor_styles()
 {
-    if (wp_style_is('avh-animated-carousel', 'registered')) {
-        wp_enqueue_style('avh-animated-carousel');
+    if (wp_style_is('avh-animated-carousel-style', 'registered')) {
+        wp_enqueue_style('avh-animated-carousel-style');
     }
 }
 add_action('elementor/editor/after_enqueue_styles', 'avh_enqueue_animated_carousel_editor_styles');
