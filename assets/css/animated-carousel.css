@@ -1,5 +1,5 @@
 /**
- * Animated Carousel — slide widths (active > adjacent > outer). Fallbacks match PHP defaults.
+ * Animated Carousel — active > adjacent > outer slide widths.
  */
 .elementor-widget-avh-animated-carousel {
 	--avh-ac-active-width: 54%;
@@ -7,43 +7,93 @@
 	--avh-ac-outer-width: 20%;
 }
 
-.elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper > .swiper-slide {
+/* Swiper container */
+.elementor-widget-avh-animated-carousel .avh-ac-carousel {
+	overflow: hidden;
+	position: relative;
+}
+
+/* Slide sizing */
+.elementor-widget-avh-animated-carousel .swiper-slide {
 	width: var(--avh-ac-outer-width, 20%);
 	max-width: none;
 	flex-shrink: 0;
 	box-sizing: border-box;
-	transition: width 0.35s ease;
+	transition: width 0.35s ease, opacity 0.35s ease;
 }
 
-.elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper > .swiper-slide-prev,
-.elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper > .swiper-slide-next {
+.elementor-widget-avh-animated-carousel .swiper-slide-prev,
+.elementor-widget-avh-animated-carousel .swiper-slide-next {
 	width: var(--avh-ac-adjacent-width, 34%);
 }
 
-.elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper > .swiper-slide-active {
+.elementor-widget-avh-animated-carousel .swiper-slide-active {
 	width: var(--avh-ac-active-width, 54%);
 }
 
-.elementor-widget-avh-animated-carousel .e-n-carousel {
-	display: flex;
-	min-width: 0;
+/* Inner slide: image container */
+.elementor-widget-avh-animated-carousel .avh-ac-slide {
+	width: 100%;
+	height: 400px;
+	overflow: hidden;
+	position: relative;
 }
 
-/* Slide inner container: flex so nested content can be laid out and edited reliably */
-.elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper > .swiper-slide > .e-con {
+.elementor-widget-avh-animated-carousel .avh-ac-slide img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	display: block;
+}
+
+/* Navigation arrows */
+.elementor-widget-avh-animated-carousel .elementor-swiper-button {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 10;
+	cursor: pointer;
+	background: rgba(0, 0, 0, 0.35);
+	color: #fff;
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
 	display: flex;
-	flex-direction: column;
+	align-items: center;
 	justify-content: center;
-	align-items: stretch;
-	flex: 1 1 auto;
-	min-height: 0;
-	box-sizing: border-box;
+	transition: background 0.2s;
 }
 
-.elementor-edit-mode .elementor-widget-avh-animated-carousel .e-n-carousel.swiper {
-	overflow: visible;
+.elementor-widget-avh-animated-carousel .elementor-swiper-button:hover {
+	background: rgba(0, 0, 0, 0.6);
 }
 
-.elementor-edit-mode .elementor-widget-avh-animated-carousel .e-n-carousel > .swiper-wrapper {
-	overflow: visible;
+.elementor-widget-avh-animated-carousel .elementor-swiper-button-prev {
+	left: 12px;
+}
+
+.elementor-widget-avh-animated-carousel .elementor-swiper-button-next {
+	right: 12px;
+}
+
+.elementor-widget-avh-animated-carousel .elementor-swiper-button.hide {
+	display: none;
+}
+
+/* Pagination */
+.elementor-widget-avh-animated-carousel .swiper-pagination {
+	position: relative;
+	margin-top: 12px;
+	text-align: center;
+}
+
+.elementor-widget-avh-animated-carousel .swiper-pagination-bullet {
+	background: #aaa;
+	opacity: 0.6;
+}
+
+.elementor-widget-avh-animated-carousel .swiper-pagination-bullet-active {
+	background: #333;
+	opacity: 1;
 }

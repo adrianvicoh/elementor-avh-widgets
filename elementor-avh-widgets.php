@@ -2,47 +2,27 @@
 /*
 Plugin Name:    Elementor AVH Widgets
 Description:    WordPress plugin with extended widgets for Elementor
-Version:        0.0.3
+Version:        0.0.4
 Author:         Adrián Vico Hernández <adrian.vico.95@gmail.com>
 License:        GPL v2 or later
 Text Domain:    elementor-avh-widgets
 */
 
 /**
- * Whether Animated Carousel (Nested Carousel child) can be registered.
- */
-function avh_elementor_can_register_animated_carousel(): bool
-{
-    if (! defined('ELEMENTOR_PRO_VERSION')) {
-        return false;
-    }
-    if (! class_exists('\ElementorPro\Modules\NestedCarousel\Widgets\Nested_Carousel')) {
-        return false;
-    }
-    if (! class_exists('\ElementorPro\Plugin')) {
-        return false;
-    }
-    return \ElementorPro\Plugin::elementor()->experiments->is_feature_active('nested-elements', true);
-}
-
-/**
- * Register Elementor test widgets.
+ * Register Elementor widgets.
  */
 function register_new_widgets($widgets_manager)
 {
     require_once __DIR__ . '/widgets/expanded-content-button.php';
-
     $widgets_manager->register(new \Expanded_Content_Button());
 
-    if (avh_elementor_can_register_animated_carousel()) {
-        require_once __DIR__ . '/widgets/animated-carousel.php';
-        $widgets_manager->register(new \AVH_Animated_Carousel());
-    }
+    require_once __DIR__ . '/widgets/animated-carousel.php';
+    $widgets_manager->register(new \AVH_Animated_Carousel());
 }
 add_action('elementor/widgets/register', 'register_new_widgets');
 
 /**
- * Register categories for Elementor test widgets.
+ * Register categories for Elementor widgets.
  */
 function add_elementor_widget_categories($elements_manager)
 {
@@ -57,7 +37,7 @@ add_action(
 );
 
 /**
- * Register scripts and styles for Elementor test widgets.
+ * Register scripts and styles for Elementor widgets.
  */
 function elementor_avh_widgets_dependencies()
 {
@@ -84,11 +64,6 @@ function elementor_avh_widgets_dependencies()
     $ac_script = $base . '/assets/js/animated-carousel.js';
     $ac_style = $base . '/assets/css/animated-carousel.css';
 
-    $ac_style_deps = ['e-swiper'];
-    if (wp_style_is('widget-nested-carousel', 'registered')) {
-        $ac_style_deps[] = 'widget-nested-carousel';
-    }
-
     wp_register_script(
         'avh-animated-carousel-script',
         plugins_url('/assets/js/animated-carousel.js', __FILE__),
@@ -100,7 +75,7 @@ function elementor_avh_widgets_dependencies()
     wp_register_style(
         'avh-animated-carousel-style',
         plugins_url('/assets/css/animated-carousel.css', __FILE__),
-        $ac_style_deps,
+        [],
         file_exists($ac_style) ? filemtime($ac_style) : false,
     );
 }
@@ -109,31 +84,7 @@ add_action('elementor/frontend/after_register_scripts', 'elementor_avh_widgets_d
 add_action('elementor/frontend/after_register_styles', 'elementor_avh_widgets_dependencies', 20);
 
 /**
- * Register and enqueue editor script so the widget is a valid Nested Element (editable slide containers).
- *
- * Must load after Elementor Pro editor and core `nested-elements` (NestedElementBase), otherwise
- * registerElementType runs too early and slides stay empty.
- */
-function avh_register_and_enqueue_animated_carousel_editor_script()
-{
-    if (! avh_elementor_can_register_animated_carousel()) {
-        return;
-    }
-    $path = __DIR__ . '/assets/js/animated-carousel-editor.js';
-    $deps = ['elementor-editor', 'elementor-pro', 'nested-elements'];
-    wp_register_script(
-        'avh-animated-carousel-editor',
-        plugins_url('/assets/js/animated-carousel-editor.js', __FILE__),
-        $deps,
-        file_exists($path) ? filemtime($path) : false,
-        true
-    );
-    wp_enqueue_script('avh-animated-carousel-editor');
-}
-add_action('elementor/editor/before_enqueue_scripts', 'avh_register_and_enqueue_animated_carousel_editor_script', 100);
-
-/**
- * Enqueue frontend CSS in the editor preview iframe too.
+ * Enqueue carousel CSS in the editor preview iframe.
  */
 function avh_enqueue_animated_carousel_editor_styles()
 {

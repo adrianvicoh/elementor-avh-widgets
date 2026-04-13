@@ -1,260 +1,118 @@
 /**
- * Frontend handler for AVH Animated Carousel (extends Elementor CarouselBase / Nested Carousel behaviour).
+ * Frontend handler for AVH Animated Carousel.
+ * Self-contained Swiper initialization — no dependency on Elementor CarouselBase.
  */
 (function ($) {
 	'use strict';
 
-	if (typeof elementorModules === 'undefined' || !elementorModules.frontend || !elementorModules.frontend.handlers || !elementorModules.frontend.handlers.CarouselBase) {
-		return;
-	}
-
-	const CarouselBase = elementorModules.frontend.handlers.CarouselBase;
-
-	class AVHAnimatedNestedCarousel extends CarouselBase {
-		getDefaultSettings() {
-			const settings = super.getDefaultSettings();
-			settings.selectors.carousel = '.e-n-carousel';
-			settings.selectors.slidesWrapper = '.e-n-carousel > .swiper-wrapper';
-			return settings;
+	function initCarousel($scope) {
+		var $carousel = $scope.find('.avh-ac-carousel');
+		if (!$carousel.length) {
+			return;
 		}
 
-		getSwiperSettings() {
-			const settings = super.getSwiperSettings();
-			const elementSettings = this.getElementSettings();
-			const isRtl = elementorFrontend.config.is_rtl;
-			const widgetSelector = `.elementor-element-${this.getID()}`;
+		var widgetId = $scope.data('id');
+		var widgetSelector = '.elementor-element-' + widgetId;
+		var settings = getWidgetSettings($scope);
+		var isRtl = elementorFrontend.config.is_rtl;
+		var isEditor = elementorFrontend.isEditMode();
 
-			if (elementorFrontend.isEditMode()) {
-				delete settings.autoplay;
-				settings.loop = false;
-				settings.noSwipingSelector = '.swiper-slide > .e-con .elementor-element';
-				settings.allowTouchMove = false;
-			}
+		var swiperConfig = {
+			slidesPerView: 'auto',
+			centeredSlides: true,
+			slidesPerGroup: 1,
+			speed: parseInt(settings.speed, 10) || 500,
+			spaceBetween: parseInt(settings.avh_slide_gap ? settings.avh_slide_gap.size : 10, 10) || 10,
+			loop: !isEditor && settings.infinite === 'yes',
+			watchSlidesProgress: true,
+		};
 
-			if ('yes' === elementSettings.arrows) {
-				settings.navigation = {
-					prevEl: isRtl
-						? `${widgetSelector} .elementor-swiper-button-next`
-						: `${widgetSelector} .elementor-swiper-button-prev`,
-					nextEl: isRtl
-						? `${widgetSelector} .elementor-swiper-button-prev`
-						: `${widgetSelector} .elementor-swiper-button-next`,
-				};
-			}
-
-			this.applySwipeOptions(settings);
-
-			settings.slidesPerView = 'auto';
-			settings.centeredSlides = true;
-			settings.slidesPerGroup = 1;
-
-			if (settings.breakpoints) {
-				Object.keys(settings.breakpoints).forEach(function (bp) {
-					settings.breakpoints[bp].slidesPerView = 'auto';
-					settings.breakpoints[bp].slidesPerGroup = 1;
-				});
-			}
-
-			if (settings.loop && !elementorFrontend.isEditMode()) {
-				settings.loopAdditionalSlides = Math.max(
-					settings.loopAdditionalSlides || 0,
-					2
-				);
-			}
-
-			return settings;
-		}
-
-		applyOffsetSettings(elementSettings, swiperSettings, slidesToShow) {
-			if (elementorFrontend.isEditMode()) {
-				return;
-			}
-			super.applyOffsetSettings(elementSettings, swiperSettings, slidesToShow);
-		}
-
-		async onInit(...args) {
-			this.wrapSlideContent();
-			super.onInit(...args);
-			this.ranElementHandlers = false;
-		}
-
-		async initSwiper() {
-			const SwiperCtor = elementorFrontend.utils.swiper;
-			this.swiper = await new SwiperCtor(
-				this.elements.$swiperContainer,
-				this.getSwiperSettings()
-			);
-			this.elements.$swiperContainer.data('swiper', this.swiper);
-		}
-
-		handleElementHandlers() {
-			if (this.ranElementHandlers || !this.swiper) {
-				return;
-			}
-			const slideDuplicateClass = this.swiper.params.slideDuplicateClass;
-			const duplicates = Array.from(this.swiper.slides).filter(function (slide) {
-				return slide.classList.contains(slideDuplicateClass);
-			});
-			duplicates.forEach(function (slide) {
-				$(slide)
-					.find('.elementor-element')
-					.each(function () {
-						elementorFrontend.elementsHandler.runReadyTrigger($(this));
-					});
-			});
-			this.ranElementHandlers = true;
-		}
-
-		wrapSlideContent() {
-			if (!elementorFrontend.isEditMode()) {
-				return;
-			}
-			const settings = this.getSettings();
-			const slideClass = settings.selectors.slideContent.replace('.', '');
-			const $widget = this.$element;
-			let index = 1;
-			this.findElement(`${settings.selectors.slidesWrapper} > .e-con`).each(function () {
-				const $con = $(this);
-				const alreadyWrapped = $con.closest('div').hasClass(slideClass);
-				const $target = $widget.find(
-					`${settings.selectors.slidesWrapper} > .${slideClass}:nth-child(${index})`
-				);
-				if (!alreadyWrapped) {
-					$target.append($con);
-				}
-				index++;
-			});
-		}
-
-		togglePauseOnHover(state) {
-			if (elementorFrontend.isEditMode()) {
-				return;
-			}
-			super.togglePauseOnHover(state);
-		}
-
-		getChangeableProperties() {
-			return {
-				arrows_position: 'arrows_position',
+		if (!isEditor && settings.autoplay === 'yes') {
+			swiperConfig.autoplay = {
+				delay: parseInt(settings.autoplay_speed, 10) || 5000,
+				disableOnInteraction: settings.pause_on_interaction === 'yes',
+				pauseOnMouseEnter: settings.pause_on_hover === 'yes',
 			};
 		}
 
-		applySwipeOptions(settings) {
-			if (this.isTouchDevice()) {
-				settings.touchRatio = 1;
-				settings.longSwipesRatio = 0.3;
-				settings.followFinger = true;
-				settings.threshold = 10;
-			} else {
-				settings.shortSwipes = false;
-			}
+		if (settings.arrows === 'yes') {
+			swiperConfig.navigation = {
+				prevEl: isRtl
+					? widgetSelector + ' .elementor-swiper-button-next'
+					: widgetSelector + ' .elementor-swiper-button-prev',
+				nextEl: isRtl
+					? widgetSelector + ' .elementor-swiper-button-prev'
+					: widgetSelector + ' .elementor-swiper-button-next',
+			};
 		}
 
-		isTouchDevice() {
-			return elementorFrontend.utils.environment.isTouchDevice;
+		var pagination = settings.pagination;
+		if (pagination) {
+			swiperConfig.pagination = {
+				el: widgetSelector + ' .swiper-pagination',
+				type: pagination,
+				clickable: true,
+			};
 		}
 
-		async linkContainer(e) {
-			const detail = e.detail;
-			const container = detail.container;
-			const index = detail.index;
-			const targetContainer = detail.targetContainer;
-			const actionType = detail.action.type;
-			const $containerView = container.view.$el;
-			if (container.model.get('id') !== this.$element.data('id')) {
-				return;
-			}
-			const slides = this.getDefaultElements().$slides;
-			let parentNode;
-			let node;
-			switch (actionType) {
-				case 'move':
-					[parentNode, node] = this.move($containerView, index, targetContainer, slides);
-					break;
-				case 'duplicate':
-					[parentNode, node] = this.duplicate($containerView, index, targetContainer, slides);
-					break;
-				default:
-					return;
-			}
-			if (undefined !== parentNode) {
-				parentNode.appendChild(node);
-			}
-			this.shouldHideNavButtons($containerView, slides);
-			this.updateIndexValues(slides);
-			const swiperOk = this.swiper && !this.swiper.destroyed;
-			const hasMultiple = slides.length > 1;
-			if (!swiperOk && hasMultiple) {
-				await this.initSwiper();
-			} else if (swiperOk && !hasMultiple) {
-				this.swiper.destroy(true);
-			}
-			this.updateListeners();
+		if (swiperConfig.loop) {
+			swiperConfig.loopAdditionalSlides = 2;
 		}
 
-		updateListeners() {
-			if (!this.swiper) {
-				return;
+		var swiperEl = $carousel[0];
+
+		if (typeof elementorFrontend.utils !== 'undefined' && elementorFrontend.utils.swiper) {
+			new elementorFrontend.utils.swiper(swiperEl, swiperConfig).then(function (swiperInstance) {
+				storeAndBind($scope, swiperInstance, settings);
+			});
+		} else if (typeof Swiper !== 'undefined') {
+			var swiperInstance = new Swiper(swiperEl, swiperConfig);
+			storeAndBind($scope, swiperInstance, settings);
+		}
+	}
+
+	function storeAndBind($scope, swiper, settings) {
+		$scope.data('avhSwiper', swiper);
+
+		$(window).on('resize.avhAnimatedCarousel' + $scope.data('id'), function () {
+			if (swiper && !swiper.destroyed) {
+				swiper.update();
 			}
-			this.swiper.initialized = false;
-			this.swiper.init();
-		}
+		});
 
-		move($view, index, targetContainer, slides) {
-			return [slides[index], targetContainer.view.$el[0]];
-		}
-
-		duplicate($view, index, targetContainer, slides) {
-			return [slides[index + 1], targetContainer.view.$el[0]];
-		}
-
-		updateIndexValues(slides) {
-			slides.each(function (i, slide) {
-				slide.setAttribute('data-slide', i + 1);
+		if (settings.pause_on_hover === 'yes' && settings.autoplay === 'yes') {
+			$scope.find('.avh-ac-carousel').on('mouseenter', function () {
+				if (swiper.autoplay && swiper.autoplay.running) {
+					swiper.autoplay.stop();
+				}
+			}).on('mouseleave', function () {
+				if (swiper.autoplay && !swiper.autoplay.running) {
+					swiper.autoplay.start();
+				}
 			});
 		}
+	}
 
-		bindEvents() {
-			super.bindEvents();
-			elementorFrontend.elements.$window.on(
-				'elementor/nested-container/atomic-repeater',
-				this.linkContainer.bind(this)
-			);
-			this.onResize = this.onResize.bind(this);
-			elementorFrontend.elements.$window.on(
-				'resize.avhAnimatedCarousel',
-				this.onResize
-			);
+	function getWidgetSettings($scope) {
+		var widgetModel = null;
+
+		if (typeof elementorFrontend.config.elements !== 'undefined') {
+			widgetModel = elementorFrontend.config.elements.data[$scope.data('model-cid')];
 		}
 
-		onResize() {
-			if (this.swiper && !this.swiper.destroyed) {
-				this.swiper.update();
-			}
+		if (widgetModel) {
+			return widgetModel.attributes || {};
 		}
 
-		shouldHideNavButtons($element, slides) {
-			const buttons = $element[0].querySelectorAll('.elementor-swiper-button');
-			const single = slides.length === 1;
-			const hasHide = buttons[0] && buttons[0].classList.contains('hide');
-			if (single !== hasHide) {
-				buttons.forEach(function (btn) {
-					btn.classList.toggle('hide', single);
-				});
-			}
-		}
+		var settingsAttr = $scope.data('settings') || {};
+		return settingsAttr;
 	}
 
 	$(window).on('elementor/frontend/init', function () {
 		elementorFrontend.hooks.addAction(
 			'frontend/element_ready/avh-animated-carousel.default',
 			function ($scope) {
-				if (!$scope.find('.e-n-carousel').length) {
-					return;
-				}
-				elementorFrontend.elementsHandler.addHandler(AVHAnimatedNestedCarousel, {
-					$element: $scope,
-				});
+				initCarousel($scope);
 			}
 		);
 	});
