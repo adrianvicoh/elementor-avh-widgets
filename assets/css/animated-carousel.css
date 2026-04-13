@@ -5,12 +5,23 @@
 	--avh-ac-active-width: 54%;
 	--avh-ac-adjacent-width: 34%;
 	--avh-ac-outer-width: 20%;
+	--avh-ac-widget-min-height: 460px;
 }
 
 /* Swiper container */
 .elementor-widget-avh-animated-carousel .avh-ac-carousel {
-	overflow: hidden;
+	overflow: visible;
 	position: relative;
+	min-height: var(--avh-ac-widget-min-height);
+	padding: 20px 0;
+}
+
+.elementor-widget-avh-animated-carousel .swiper-wrapper {
+	overflow: visible;
+}
+
+.elementor-widget-avh-animated-carousel .elementor-widget-container {
+	overflow: visible;
 }
 
 /* Slide sizing */
