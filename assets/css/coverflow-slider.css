@@ -1,0 +1,110 @@
+/**
+ * AVH Coverflow Slider — local styles.
+ *
+ * Mirrors the inline <style> block of the developer reference snippet so the
+ * 3D coverflow effect renders correctly, plus styling for navigation arrows
+ * and the pagination wrapper.
+ */
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper,
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-wrapper {
+	transform-style: preserve-3d;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper {
+	overflow-x: clip;
+	position: relative;
+	width: 100%;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-wrapper {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	box-sizing: content-box;
+	position: relative;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-wrapper > * {
+	flex-shrink: 0 !important;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-slide {
+	position: relative;
+	overflow: hidden;
+	background: transparent;
+	box-sizing: border-box;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-slide img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+	display: block;
+}
+
+/* Pagination */
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-pagination-wrap {
+	display: flex;
+	justify-content: center;
+	margin-top: 16px;
+	width: 100%;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-pagination {
+	max-width: 10%;
+	font-weight: 600;
+	user-select: none;
+	text-align: center;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-pagination .swiper-pagination-bullet {
+	background: currentColor;
+	opacity: 0.4;
+	transition: opacity 0.2s ease;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-pagination .swiper-pagination-bullet-active {
+	opacity: 1;
+}
+
+/* Navigation arrows */
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+	margin-top: 16px;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-prev,
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-next {
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 12px;
+	user-select: none;
+	transition: opacity 0.2s ease;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-prev:focus-visible,
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-next:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-prev.swiper-button-disabled,
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-next.swiper-button-disabled {
+	opacity: 0.35;
+	cursor: not-allowed;
+}
+
+.elementor-widget-avh-coverflow-slider .avh-coverflow-swiper-arrow-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+}
