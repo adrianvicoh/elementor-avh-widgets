@@ -259,21 +259,12 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
 
         $this->end_controls_section();
 
-        /* Style Section */
+        /* Style - Container */
         $this->start_controls_section(
-            'section_style',
+            'section_style_container',
             [
-                'label' => esc_html__('Style', 'textdomain'),
+                'label' => esc_html__('Style - Container', 'textdomain'),
                 'tab' => \Elementor\Controls_Manager::TAB_STYLE,
-            ]
-        );
-
-        /* Widget container style */
-        $this->add_control(
-            'widget_container_style_heading',
-            [
-                'label' => esc_html__('Widget Container Styles', 'textdomain'),
-                'type' => \Elementor\Controls_Manager::HEADING,
             ]
         );
 
@@ -422,13 +413,22 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
             ]
         );
 
-        /* Main and button section styles */
+        $this->end_controls_section();
+
+        /* Style - Boxes */
+        $this->start_controls_section(
+            'section_style_boxes',
+            [
+                'label' => esc_html__('Style - Boxes', 'textdomain'),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
+            ]
+        );
+
         $this->add_control(
             'sections_style_heading',
             [
                 'label' => esc_html__('Main and Button Box Styles', 'textdomain'),
                 'type' => \Elementor\Controls_Manager::HEADING,
-                'separator' => 'before',
             ]
         );
 
@@ -568,6 +568,17 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
             [
                 'name' => 'button_box_container_shadow',
                 'selector' => '{{WRAPPER}} .button-box-container',
+            ]
+        );
+
+        $this->end_controls_section();
+
+        /* Style - Button */
+        $this->start_controls_section(
+            'section_style_button',
+            [
+                'label' => esc_html__('Style - Button', 'textdomain'),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             ]
         );
 
@@ -784,6 +795,17 @@ class Expanded_Content_Button extends \Elementor\Widget_Base
                 'selectors' => [
                     '{{WRAPPER}} .switch-content-button .elementor-button-content-wrapper' => 'text-align: {{VALUE}};',
                 ],
+            ]
+        );
+
+        $this->end_controls_section();
+
+        /* Style - Content */
+        $this->start_controls_section(
+            'section_style_content',
+            [
+                'label' => esc_html__('Style - Content', 'textdomain'),
+                'tab' => \Elementor\Controls_Manager::TAB_STYLE,
             ]
         );
 
