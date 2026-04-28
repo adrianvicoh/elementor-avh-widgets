@@ -2,10 +2,10 @@
 /*
 Plugin Name:    Elementor AVH Widgets
 Description:    WordPress plugin with extended widgets for Elementor
-Version:        0.0.4
 Author:         Adrián Vico Hernández <adrian.vico.95@gmail.com>
 License:        GPL v2 or later
 Text Domain:    elementor-avh-widgets
+Requires:       Elementor, Elementor Pro
 */
 
 /**
