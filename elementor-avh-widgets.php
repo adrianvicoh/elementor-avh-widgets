@@ -26,8 +26,10 @@ define( 'AVH_SWIPER_CDN_JS_SRI', 'sha512-Ysw1DcK1P+uYLqprEAzNQJP+J4hTx4t/3X2nbVw
  */
 function register_new_widgets($widgets_manager)
 {
-    require_once __DIR__ . '/widgets/coverflow-slider.php';
-    $widgets_manager->register(new \AVH_Coverflow_Slider());
+    	require_once __DIR__ . '/widgets/coverflow-slider.php';
+    	require_once __DIR__ . '/widgets/toggle-content.php';
+    	$widgets_manager->register(new \AVH_Coverflow_Slider());
+    	$widgets_manager->register(new \AVH_Toggle_Content());
 }
 add_action('elementor/widgets/register', 'register_new_widgets');
 
@@ -70,8 +72,10 @@ function elementor_avh_widgets_dependencies()
         true,
     );
 
-    $cf_script = $base . '/assets/js/coverflow-slider.js';
-    $cf_style = $base . '/assets/css/coverflow-slider.css';
+    	$cf_script = $base . '/assets/js/coverflow-slider.js';
+    	$cf_style = $base . '/assets/css/coverflow-slider.css';
+    	$toggle_script = $base . '/assets/js/toggle-content.js';
+    	$toggle_style = $base . '/assets/css/toggle-content.css';
 
     wp_register_style(
         'avh-coverflow-slider-style',
@@ -80,14 +84,29 @@ function elementor_avh_widgets_dependencies()
         file_exists($cf_style) ? filemtime($cf_style) : false,
     );
 
-    wp_register_script(
-        'avh-coverflow-slider-script',
-        plugins_url('/assets/js/coverflow-slider.js', __FILE__),
-        ['avh-swiper-cdn-script'],
-        file_exists($cf_script) ? filemtime($cf_script) : false,
-        true,
-    );
-}
+    	wp_register_script(
+    		'avh-coverflow-slider-script',
+    		plugins_url('/assets/js/coverflow-slider.js', __FILE__),
+    		['avh-swiper-cdn-script'],
+    		file_exists($cf_script) ? filemtime($cf_script) : false,
+    		true,
+    	);
+
+    	wp_register_style(
+    		'avh-toggle-content-style',
+    		plugins_url('/assets/css/toggle-content.css', __FILE__),
+    		[],
+    		file_exists($toggle_style) ? filemtime($toggle_style) : false,
+    	);
+
+    	wp_register_script(
+    		'avh-toggle-content-script',
+    		plugins_url('/assets/js/toggle-content.js', __FILE__),
+    		[],
+    		file_exists($toggle_script) ? filemtime($toggle_script) : false,
+    		true,
+    	);
+    }
 add_action('wp_enqueue_scripts', 'elementor_avh_widgets_dependencies');
 add_action('elementor/frontend/after_register_scripts', 'elementor_avh_widgets_dependencies', 20);
 add_action('elementor/frontend/after_register_styles', 'elementor_avh_widgets_dependencies', 20);
@@ -100,10 +119,13 @@ function avh_enqueue_animated_carousel_editor_styles()
     if (wp_style_is('avh-animated-carousel-style', 'registered')) {
         wp_enqueue_style('avh-animated-carousel-style');
     }
-    if (wp_style_is('avh-coverflow-slider-style', 'registered')) {
-        wp_enqueue_style('avh-coverflow-slider-style');
+    	if (wp_style_is('avh-coverflow-slider-style', 'registered')) {
+    		wp_enqueue_style('avh-coverflow-slider-style');
+    	}
+    	if (wp_style_is('avh-toggle-content-style', 'registered')) {
+    		wp_enqueue_style('avh-toggle-content-style');
+    	}
     }
-}
 add_action('elementor/editor/after_enqueue_styles', 'avh_enqueue_animated_carousel_editor_styles');
 add_action('elementor/preview/enqueue_styles', 'avh_enqueue_animated_carousel_editor_styles');
 

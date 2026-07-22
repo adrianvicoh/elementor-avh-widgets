@@ -1,0 +1,38 @@
+/**
+ * AVH Toggle Content — local styles.
+ */
+.elementor-widget-avh-toggle-content .avh-toggle-content {
+	width: 100%;
+}
+
+.elementor-widget-avh-toggle-content .avh-toggle-content__button-wrap {
+	display: flex;
+	margin-bottom: 16px;
+}
+
+.elementor-widget-avh-toggle-content .avh-toggle-content__button {
+	appearance: none;
+	border: 0;
+	border-radius: 6px;
+	cursor: pointer;
+	font: inherit;
+	padding: 12px 18px;
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.elementor-widget-avh-toggle-content .avh-toggle-content__button:hover {
+	opacity: 0.9;
+}
+
+.elementor-widget-avh-toggle-content .avh-toggle-content__button:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+.elementor-widget-avh-toggle-content .avh-toggle-content__body {
+	width: 100%;
+}
+
+.elementor-widget-avh-toggle-content .avh-toggle-content__body[hidden] {
+	display: none;
+}
