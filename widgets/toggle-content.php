@@ -1,6 +1,6 @@
 <?php
 /**
- * AVH Toggle Content — button-controlled content reveal widget for Elementor.
+ * Toggle Content — button-controlled content reveal widget for Elementor.
  */
 
 use Elementor\Controls_Manager;
@@ -9,14 +9,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-class AVH_Toggle_Content extends \Elementor\Widget_Base {
+class Toggle_Content extends \Elementor\Widget_Base {
 
 	public function get_name(): string {
-		return 'avh-toggle-content';
+		return 'toggle-content';
 	}
 
 	public function get_title(): string {
-		return esc_html__( 'AVH Toggle Content', 'elementor-avh-widgets' );
+		return esc_html__( 'Toggle Content', 'custom-elementor-widgets' );
 	}
 
 	public function get_icon(): string {
@@ -24,35 +24,35 @@ class AVH_Toggle_Content extends \Elementor\Widget_Base {
 	}
 
 	public function get_categories(): array {
-		return [ 'elementor-avh-widgets' ];
+		return [ 'custom-elementor-widgets' ];
 	}
 
 	public function get_keywords(): array {
-		return [ 'toggle', 'accordion', 'reveal', 'content', 'button', 'avh' ];
+		return [ 'toggle', 'accordion', 'reveal', 'content', 'button' ];
 	}
 
 	public function get_style_depends(): array {
-		return [ 'avh-toggle-content-style' ];
+		return [ 'toggle-content-widget-style' ];
 	}
 
 	public function get_script_depends(): array {
-		return [ 'avh-toggle-content-script' ];
+		return [ 'toggle-content-widget-script' ];
 	}
 
 	protected function register_controls(): void {
 		$this->start_controls_section(
 			'section_toggle',
 			[
-				'label' => esc_html__( 'Toggle', 'elementor-avh-widgets' ),
+				'label' => esc_html__( 'Toggle', 'custom-elementor-widgets' ),
 			]
 		);
 
 		$this->add_control(
 			'button_text',
 			[
-				'label' => esc_html__( 'Button text', 'elementor-avh-widgets' ),
+				'label' => esc_html__( 'Button text', 'custom-elementor-widgets' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => esc_html__( 'Show content', 'elementor-avh-widgets' ),
+				'default' => esc_html__( 'Show content', 'custom-elementor-widgets' ),
 				'label_block' => true,
 			]
 		);
@@ -60,9 +60,9 @@ class AVH_Toggle_Content extends \Elementor\Widget_Base {
 		$this->add_control(
 			'close_text',
 			[
-				'label' => esc_html__( 'Text when open', 'elementor-avh-widgets' ),
+				'label' => esc_html__( 'Text when open', 'custom-elementor-widgets' ),
 				'type' => Controls_Manager::TEXT,
-				'default' => esc_html__( 'Hide content', 'elementor-avh-widgets' ),
+				'default' => esc_html__( 'Hide content', 'custom-elementor-widgets' ),
 				'label_block' => true,
 			]
 		);
@@ -70,9 +70,9 @@ class AVH_Toggle_Content extends \Elementor\Widget_Base {
 		$this->add_control(
 			'content',
 			[
-				'label' => esc_html__( 'Content', 'elementor-avh-widgets' ),
+				'label' => esc_html__( 'Content', 'custom-elementor-widgets' ),
 				'type' => Controls_Manager::WYSIWYG,
-				'default' => esc_html__( 'Add your content here. It will be shown or hidden with the button.', 'elementor-avh-widgets' ),
+				'default' => esc_html__( 'Add your content here. It will be shown or hidden with the button.', 'custom-elementor-widgets' ),
 				'dynamic' => [
 					'active' => true,
 				],
@@ -82,7 +82,7 @@ class AVH_Toggle_Content extends \Elementor\Widget_Base {
 		$this->add_control(
 			'open_by_default',
 			[
-				'label' => esc_html__( 'Open by default', 'elementor-avh-widgets' ),
+				'label' => esc_html__( 'Open by default', 'custom-elementor-widgets' ),
 				'type' => Controls_Manager::SWITCHER,
 				'default' => '',
 			]
@@ -93,7 +93,7 @@ class AVH_Toggle_Content extends \Elementor\Widget_Base {
 		$this->start_controls_section(
 			'section_style_button',
 			[
-				'label' => esc_html__( 'Button', 'elementor-avh-widgets' ),
+				'label' => esc_html__( 'Button', 'custom-elementor-widgets' ),
 				'tab' => Controls_Manager::TAB_STYLE,
 			]
 		);
@@ -101,25 +101,25 @@ class AVH_Toggle_Content extends \Elementor\Widget_Base {
 		$this->add_control(
 			'button_alignment',
 			[
-				'label' => esc_html__( 'Alignment', 'elementor-avh-widgets' ),
+				'label' => esc_html__( 'Alignment', 'custom-elementor-widgets' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'flex-start' => [
-						'title' => esc_html__( 'Start', 'elementor-avh-widgets' ),
+						'title' => esc_html__( 'Start', 'custom-elementor-widgets' ),
 						'icon' => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => esc_html__( 'Center', 'elementor-avh-widgets' ),
+						'title' => esc_html__( 'Center', 'custom-elementor-widgets' ),
 						'icon' => 'eicon-text-align-center',
 					],
 					'flex-end' => [
-						'title' => esc_html__( 'End', 'elementor-avh-widgets' ),
+						'title' => esc_html__( 'End', 'custom-elementor-widgets' ),
 						'icon' => 'eicon-text-align-right',
 					],
 				],
 				'default' => 'flex-start',
 				'selectors' => [
-					'{{WRAPPER}} .avh-toggle-content__button-wrap' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} .toggle-content__button-wrap' => 'justify-content: {{VALUE}};',
 				],
 			]
 		);
@@ -127,25 +127,25 @@ class AVH_Toggle_Content extends \Elementor\Widget_Base {
 		$this->add_control(
 			'content_alignment',
 			[
-				'label' => esc_html__( 'Content alignment', 'elementor-avh-widgets' ),
+				'label' => esc_html__( 'Content alignment', 'custom-elementor-widgets' ),
 				'type' => Controls_Manager::CHOOSE,
 				'options' => [
 					'left' => [
-						'title' => esc_html__( 'Left', 'elementor-avh-widgets' ),
+						'title' => esc_html__( 'Left', 'custom-elementor-widgets' ),
 						'icon' => 'eicon-text-align-left',
 					],
 					'center' => [
-						'title' => esc_html__( 'Center', 'elementor-avh-widgets' ),
+						'title' => esc_html__( 'Center', 'custom-elementor-widgets' ),
 						'icon' => 'eicon-text-align-center',
 					],
 					'right' => [
-						'title' => esc_html__( 'Right', 'elementor-avh-widgets' ),
+						'title' => esc_html__( 'Right', 'custom-elementor-widgets' ),
 						'icon' => 'eicon-text-align-right',
 					],
 				],
 				'default' => 'left',
 				'selectors' => [
-					'{{WRAPPER}} .avh-toggle-content__body' => 'text-align: {{VALUE}};',
+					'{{WRAPPER}} .toggle-content__body' => 'text-align: {{VALUE}};',
 				],
 			]
 		);
@@ -161,16 +161,16 @@ class AVH_Toggle_Content extends \Elementor\Widget_Base {
 			return;
 		}
 
-		$button_text = $settings['button_text'] ?? esc_html__( 'Show content', 'elementor-avh-widgets' );
-		$close_text = $settings['close_text'] ?? esc_html__( 'Hide content', 'elementor-avh-widgets' );
+		$button_text = $settings['button_text'] ?? esc_html__( 'Show content', 'custom-elementor-widgets' );
+		$close_text = $settings['close_text'] ?? esc_html__( 'Hide content', 'custom-elementor-widgets' );
 		$open_by_default = 'yes' === ( $settings['open_by_default'] ?? '' );
-		$content_id = 'avh-toggle-content-' . $this->get_id();
+		$content_id = 'toggle-content-' . $this->get_id();
 
 		$this->add_render_attribute(
 			'wrapper',
 			[
 				'class' => [
-					'avh-toggle-content',
+					'toggle-content',
 					$open_by_default ? 'is-open' : 'is-closed',
 				],
 			]
@@ -179,7 +179,7 @@ class AVH_Toggle_Content extends \Elementor\Widget_Base {
 		$this->add_render_attribute(
 			'button',
 			[
-				'class' => 'avh-toggle-content__button',
+				'class' => 'toggle-content__button',
 				'type' => 'button',
 				'aria-controls' => $content_id,
 				'aria-expanded' => $open_by_default ? 'true' : 'false',
@@ -191,7 +191,7 @@ class AVH_Toggle_Content extends \Elementor\Widget_Base {
 		$this->add_render_attribute(
 			'body',
 			[
-				'class' => 'avh-toggle-content__body',
+				'class' => 'toggle-content__body',
 				'id' => $content_id,
 			]
 		);
@@ -201,9 +201,9 @@ class AVH_Toggle_Content extends \Elementor\Widget_Base {
 		}
 		?>
 		<div <?php $this->print_render_attribute_string( 'wrapper' ); ?>>
-			<div class="avh-toggle-content__button-wrap">
+			<div class="toggle-content__button-wrap">
 				<button <?php $this->print_render_attribute_string( 'button' ); ?>>
-					<span class="avh-toggle-content__button-text"><?php echo esc_html( $button_text ); ?></span>
+					<span class="toggle-content__button-text"><?php echo esc_html( $button_text ); ?></span>
 				</button>
 			</div>
 

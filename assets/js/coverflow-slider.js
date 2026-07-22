@@ -1,5 +1,5 @@
 /**
- * Frontend handler for AVH Coverflow Slider.
+ * Frontend handler for Coverflow Slider.
  *
  * Reads the JSON payload serialized by the PHP widget into `data-settings`,
  * builds a Swiper config that mirrors the developer reference snippet, and
@@ -8,7 +8,7 @@
 (function () {
 	'use strict';
 
-	var INSTANCE_KEY = 'avhCoverflowSwiper';
+	var INSTANCE_KEY = 'coverflowSwiper';
 
 	function parseSettings(el) {
 		try {
@@ -36,8 +36,8 @@
 				modifier: typeof payload.modifier === 'number' ? payload.modifier : 1,
 				slideShadows: !!payload.slideShadows,
 			},
-			wrapperClass: 'avh-coverflow-swiper-wrapper',
-			slideClass: 'avh-coverflow-swiper-slide',
+			wrapperClass: 'coverflow-swiper-wrapper',
+			slideClass: 'coverflow-swiper-slide',
 			watchSlidesProgress: true,
 			observer: true,
 			observeParents: true,
@@ -45,14 +45,14 @@
 
 		if (payload.arrows) {
 			config.navigation = {
-				nextEl: scopeSel + ' .avh-coverflow-swiper-next',
-				prevEl: scopeSel + ' .avh-coverflow-swiper-prev',
+				nextEl: scopeSel + ' .coverflow-swiper-next',
+				prevEl: scopeSel + ' .coverflow-swiper-prev',
 			};
 		}
 
 		if (payload.pagination) {
 			config.pagination = {
-				el: scopeSel + ' .avh-coverflow-swiper-pagination',
+				el: scopeSel + ' .coverflow-swiper-pagination',
 				type: payload.pagination,
 				clickable: payload.pagination === 'bullets',
 			};
@@ -89,7 +89,7 @@
 			return;
 		}
 
-		var sliderEl = scopeEl.querySelector('.avh-coverflow-swiper');
+		var sliderEl = scopeEl.querySelector('.coverflow-swiper');
 		if (!sliderEl) {
 			return;
 		}
@@ -114,7 +114,7 @@
 	}
 
 	function initStandalone() {
-		var nodes = document.querySelectorAll('.elementor-widget-avh-coverflow-slider');
+		var nodes = document.querySelectorAll('.elementor-widget-coverflow-slider');
 		for (var i = 0; i < nodes.length; i++) {
 			initOnScope(nodes[i]);
 		}
@@ -124,7 +124,7 @@
 		window.jQuery(window).on('elementor/frontend/init', function () {
 			if (window.elementorFrontend && window.elementorFrontend.hooks) {
 				window.elementorFrontend.hooks.addAction(
-					'frontend/element_ready/avh-coverflow-slider.default',
+					'frontend/element_ready/coverflow-slider.default',
 					initFromJQueryScope
 				);
 			}

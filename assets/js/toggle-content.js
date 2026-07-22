@@ -1,5 +1,5 @@
 /**
- * Frontend handler for AVH Toggle Content.
+ * Frontend handler for Toggle Content.
  */
 (function () {
 	'use strict';
@@ -7,7 +7,7 @@
 	function setButtonState(button, isOpen) {
 		var openText = button.getAttribute('data-open-text') || '';
 		var closeText = button.getAttribute('data-close-text') || '';
-		var textNode = button.querySelector('.avh-toggle-content__button-text');
+		var textNode = button.querySelector('.toggle-content__button-text');
 
 		button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 		if (textNode) {
@@ -30,18 +30,18 @@
 	function toggleContent(scope) {
 		var scopeEl = getScopeElement(scope);
 
-		if (!scopeEl || scopeEl.dataset.avhToggleBound === 'yes') {
+		if (!scopeEl || scopeEl.dataset.toggleContentBound === 'yes') {
 			return;
 		}
 
-		var button = scopeEl.querySelector('.avh-toggle-content__button');
-		var body = scopeEl.querySelector('.avh-toggle-content__body');
+		var button = scopeEl.querySelector('.toggle-content__button');
+		var body = scopeEl.querySelector('.toggle-content__body');
 
 		if (!button || !body) {
 			return;
 		}
 
-		scopeEl.dataset.avhToggleBound = 'yes';
+		scopeEl.dataset.toggleContentBound = 'yes';
 		setButtonState(button, body.hidden === false);
 
 		button.addEventListener('click', function () {
@@ -55,7 +55,7 @@
 	}
 
 	function initStandalone() {
-		var nodes = document.querySelectorAll('.elementor-widget-avh-toggle-content');
+		var nodes = document.querySelectorAll('.elementor-widget-toggle-content');
 		for (var i = 0; i < nodes.length; i++) {
 			toggleContent(nodes[i]);
 		}
@@ -65,7 +65,7 @@
 		window.jQuery(window).on('elementor/frontend/init', function () {
 			if (window.elementorFrontend && window.elementorFrontend.hooks) {
 				window.elementorFrontend.hooks.addAction(
-					'frontend/element_ready/avh-toggle-content.default',
+					'frontend/element_ready/toggle-content.default',
 					toggleContent
 				);
 			}

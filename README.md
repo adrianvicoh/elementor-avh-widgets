@@ -1,6 +1,6 @@
-# elementor-avh-widgets
+# Elementor Custom Widgets
 WordPress plugin with extended widgets for Elementor
 
 Widgets included:
-- AVH Coverflow Slider
-- AVH Toggle Content
+- Coverflow Slider
+- Toggle Content
