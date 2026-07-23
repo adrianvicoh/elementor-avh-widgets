@@ -8,6 +8,12 @@ Text Domain:    custom-elementor-widgets
 Requires:       Elementor, Elementor Pro
 */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+require_once __DIR__ . '/dashboard/dashboard-configs.php';
+
 // Swiper 11 CDN constants used by the Coverflow Slider.
 if ( ! defined( 'SWIPER_CDN_VERSION' ) ) {
 	define( 'SWIPER_CDN_VERSION', '11.0.5' );
@@ -30,12 +36,17 @@ if ( ! defined( 'SWIPER_CDN_JS_SRI' ) ) {
  */
 function register_new_widgets($widgets_manager)
 {
-	require_once __DIR__ . '/widgets/coverflow-slider.php';
-	require_once __DIR__ . '/widgets/toggle-content.php';
+	foreach ( elementor_avh_get_available_widgets() as $widget_id => $widget ) {
+		if ( ! elementor_avh_is_widget_enabled( $widget_id ) ) {
+			continue;
+		}
 
-	foreach ([ 'Coverflow_Slider', 'Toggle_Content' ] as $widget_class) {
-		if (class_exists($widget_class)) {
-			$widgets_manager->register(new $widget_class());
+		require_once $widget['file'];
+
+		$widget_class = $widget['class'];
+
+		if ( class_exists( $widget_class ) ) {
+			$widgets_manager->register( new $widget_class() );
 		}
 	}
 }
@@ -46,6 +57,10 @@ add_action('elementor/widgets/register', 'register_new_widgets');
  */
 function add_elementor_widget_categories($elements_manager)
 {
+	if ( [] === elementor_avh_get_enabled_widgets() ) {
+		return;
+	}
+
 	$elements_manager->add_category('custom-elementor-widgets', [
 		'title' => esc_html__('Custom Elementor Widgets', 'custom-elementor-widgets'),
 		'icon' => 'fa fa-plug',
@@ -124,11 +139,17 @@ add_action('elementor/frontend/after_register_styles', 'elementor_widgets_depend
  */
 function enqueue_editor_widget_styles()
 {
-	if (wp_style_is('coverflow-slider-widget-style', 'registered')) {
-		wp_enqueue_style('coverflow-slider-widget-style');
+	if (
+		elementor_avh_is_widget_enabled( 'coverflow-slider' )
+		&& wp_style_is( 'coverflow-slider-widget-style', 'registered' )
+	) {
+		wp_enqueue_style( 'coverflow-slider-widget-style' );
 	}
-	if (wp_style_is('toggle-content-widget-style', 'registered')) {
-		wp_enqueue_style('toggle-content-widget-style');
+	if (
+		elementor_avh_is_widget_enabled( 'toggle-content' )
+		&& wp_style_is( 'toggle-content-widget-style', 'registered' )
+	) {
+		wp_enqueue_style( 'toggle-content-widget-style' );
 	}
 }
 add_action('elementor/editor/after_enqueue_styles', 'enqueue_editor_widget_styles');
