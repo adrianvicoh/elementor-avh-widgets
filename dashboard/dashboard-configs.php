@@ -16,6 +16,7 @@ if ( ! defined( 'ELEMENTOR_AVH_SETTINGS_GROUP' ) ) {
 }
 
 require_once __DIR__ . '/dash-configs/widget-visibility.php';
+require_once __DIR__ . '/dash-configs/config-visibility.php';
 
 /**
  * Register the plugin dashboard page.
@@ -67,7 +68,7 @@ function elementor_avh_render_dashboard_page(): void {
 	?>
 	<div class="wrap elementor-avh-dashboard">
 		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-		<p><?php esc_html_e( 'Manage the behavior of the widgets included with this plugin.', 'custom-elementor-widgets' ); ?></p>
+		<p><?php esc_html_e( 'Manage the widgets and Elementor-wide features included with this plugin.', 'custom-elementor-widgets' ); ?></p>
 
 		<?php settings_errors(); ?>
 
