@@ -26,12 +26,14 @@ function elementor_avh_get_available_widgets(): array {
 		'coverflow-slider' => [
 			'title'       => esc_html__( 'Coverflow Slider', 'custom-elementor-widgets' ),
 			'description' => esc_html__( 'Image slider with a three-dimensional coverflow effect.', 'custom-elementor-widgets' ),
+			'icon'        => 'eicon-slider-3d',
 			'class'       => 'Coverflow_Slider',
 			'file'        => $plugin_root . '/widgets/coverflow-slider.php',
 		],
 		'toggle-content' => [
 			'title'       => esc_html__( 'Toggle Content', 'custom-elementor-widgets' ),
 			'description' => esc_html__( 'Button-controlled content reveal widget.', 'custom-elementor-widgets' ),
+			'icon'        => 'eicon-toggle',
 			'class'       => 'Toggle_Content',
 			'file'        => $plugin_root . '/widgets/toggle-content.php',
 		],
@@ -140,26 +142,41 @@ function elementor_avh_render_widget_visibility_field(): void {
 	$enabled_widgets   = elementor_avh_get_enabled_widgets();
 
 	echo '<fieldset>';
+	echo '<div class="elementor-avh-widget-grid">';
 
 	foreach ( $available_widgets as $widget_id => $widget ) {
-		$field_id = 'elementor-avh-widget-' . $widget_id;
+		$field_id       = 'elementor-avh-widget-' . $widget_id;
+		$description_id = $field_id . '-description';
 		?>
-		<p>
-			<label for="<?php echo esc_attr( $field_id ); ?>">
+		<label class="elementor-avh-widget-card" for="<?php echo esc_attr( $field_id ); ?>">
+			<span class="elementor-avh-widget-card__icon" aria-hidden="true">
+				<i class="<?php echo esc_attr( $widget['icon'] ); ?>"></i>
+			</span>
+			<span class="elementor-avh-widget-card__content">
+				<strong class="elementor-avh-widget-card__title"><?php echo esc_html( $widget['title'] ); ?></strong>
+				<span
+					class="elementor-avh-widget-card__description"
+					id="<?php echo esc_attr( $description_id ); ?>"
+				>
+					<?php echo esc_html( $widget['description'] ); ?>
+				</span>
+			</span>
+			<span class="elementor-avh-widget-card__control">
 				<input
+					class="elementor-avh-widget-card__checkbox"
 					type="checkbox"
 					id="<?php echo esc_attr( $field_id ); ?>"
 					name="<?php echo esc_attr( ELEMENTOR_AVH_ENABLED_WIDGETS_OPTION ); ?>[]"
 					value="<?php echo esc_attr( $widget_id ); ?>"
+					aria-describedby="<?php echo esc_attr( $description_id ); ?>"
 					<?php checked( in_array( $widget_id, $enabled_widgets, true ) ); ?>
 				>
-				<strong><?php echo esc_html( $widget['title'] ); ?></strong>
-			</label>
-			<br>
-			<span class="description"><?php echo esc_html( $widget['description'] ); ?></span>
-		</p>
+				<span class="elementor-avh-widget-card__switch" aria-hidden="true"></span>
+			</span>
+		</label>
 		<?php
 	}
 
+	echo '</div>';
 	echo '</fieldset>';
 }

@@ -33,6 +33,31 @@ function elementor_avh_register_dashboard_menu(): void {
 add_action( 'admin_menu', 'elementor_avh_register_dashboard_menu' );
 
 /**
+ * Load styles only on the plugin dashboard page.
+ */
+function elementor_avh_enqueue_dashboard_assets( string $hook_suffix ): void {
+	if ( 'toplevel_page_' . ELEMENTOR_AVH_DASHBOARD_PAGE !== $hook_suffix ) {
+		return;
+	}
+
+	$dependencies = [];
+	$stylesheet   = __DIR__ . '/assets/css/dashboard.css';
+
+	if ( wp_style_is( 'elementor-icons', 'registered' ) ) {
+		wp_enqueue_style( 'elementor-icons' );
+		$dependencies[] = 'elementor-icons';
+	}
+
+	wp_enqueue_style(
+		'elementor-avh-dashboard',
+		plugins_url( 'assets/css/dashboard.css', __FILE__ ),
+		$dependencies,
+		file_exists( $stylesheet ) ? filemtime( $stylesheet ) : false
+	);
+}
+add_action( 'admin_enqueue_scripts', 'elementor_avh_enqueue_dashboard_assets', 20 );
+
+/**
  * Render the plugin dashboard page.
  */
 function elementor_avh_render_dashboard_page(): void {
@@ -40,7 +65,7 @@ function elementor_avh_render_dashboard_page(): void {
 		return;
 	}
 	?>
-	<div class="wrap">
+	<div class="wrap elementor-avh-dashboard">
 		<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 		<p><?php esc_html_e( 'Manage the behavior of the widgets included with this plugin.', 'custom-elementor-widgets' ); ?></p>
 
