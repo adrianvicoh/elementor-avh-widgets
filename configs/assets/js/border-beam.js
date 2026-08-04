@@ -315,7 +315,9 @@
 
 		window.elementorFrontend.hooks.addAction('frontend/element_ready/global', ($scope) => {
 			const scope = $scope?.[0] || $scope;
-			syncTree(scope);
+			if (scope?.querySelector) {
+				syncTree(scope);
+			}
 		});
 		elementorHookBound = true;
 	}
@@ -380,6 +382,15 @@
 	}
 
 	function initialize() {
+		// No ejecutar en el panel del editor (wp-admin) ni en modo vista previa de edición
+		// El efecto solo debe verse en el frontend real y en preview iframe
+		if (
+			window.elementor?.settings?.isEditMode ||
+			document.body.classList.contains('elementor-editor-active')
+		) {
+			return;
+		}
+
 		initializeObservers();
 		syncTree(document);
 		bindElementorHook();

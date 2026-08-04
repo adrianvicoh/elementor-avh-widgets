@@ -22,6 +22,11 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 		return;
 	}
 
+	// Idempotencia garantizada por el check de get_controls() de arriba.
+	// Elementor 4.x dispara `common/*` manualmente para stacks `common-optimized`
+	// (experimento e_optimized_markup); el hook nunca se ejecuta dos veces sobre
+	// el mismo stack, así que no hace falta una guarda de doing_action().
+
 	$condition = [
 		'avh_border_beam_enabled' => 'yes',
 	];
@@ -235,12 +240,14 @@ add_action( 'elementor/element/column/section_border/before_section_end', 'eleme
 
 /**
  * Enqueue the standalone Border Beam runtime.
+ * Only on frontend and preview iframe (not editor panel).
  */
 function elementor_avh_enqueue_border_beam_assets(): void {
 	$plugin_file = dirname( __DIR__ ) . '/elementor-avh-widgets.php';
 	$style_path  = __DIR__ . '/assets/css/border-beam.css';
 	$script_path = __DIR__ . '/assets/js/border-beam.js';
 
+	// Frontend real
 	wp_enqueue_style(
 		'elementor-avh-border-beam',
 		plugins_url( 'configs/assets/css/border-beam.css', $plugin_file ),
@@ -257,5 +264,7 @@ function elementor_avh_enqueue_border_beam_assets(): void {
 	);
 }
 add_action( 'wp_enqueue_scripts', 'elementor_avh_enqueue_border_beam_assets', 20 );
+
+// Preview iframe (editor canvas) — sí, panel de edición — no
 add_action( 'elementor/preview/enqueue_styles', 'elementor_avh_enqueue_border_beam_assets', 20 );
 add_action( 'elementor/preview/enqueue_scripts', 'elementor_avh_enqueue_border_beam_assets', 20 );
