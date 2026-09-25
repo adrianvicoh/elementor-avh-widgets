@@ -1,0 +1,196 @@
+<style>
+    /* 1. ASEGURAR QUE EL HERO PUEDA CONTENER EL CANVAS */
+    #hero {
+        position: relative !important;
+        overflow: hidden !important;
+        /* Evita que las formas difusas salgan del héroe */
+    }
+
+    /* 2. ACOPLAR EL CANVAS A TODO EL CONTENEDOR HERO */
+    .canvas-hero-background {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        pointer-events: none !important;
+        /* Permite clics en botones/links del hero */
+        z-index: 0 !important;
+        /* Queda detrás de todo el contenido */
+    }
+
+    /* 3. COLOCAR EL CONTENIDO Y WIDGETS POR ENCIMA DEL CANVAS */
+    #hero>.e-con-inner,
+    #hero>.elementor-widget-wrap,
+    #hero>*:not(.canvas-hero-background) {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+
+<script>
+    (function () {
+        // Ajustes del efecto (Fondo Claro: formas grandes, suaves y difusas)
+        const CONFIG = {
+            startColor: [255, 150, 200], // Rosa (izquierda)
+            endColor: [205, 170, 255],   // Lila (a medida que avanza a la derecha)
+            minBaseSize: 260,      // Tamaño mínimo
+            maxBaseSize: 460,      // Tamaño máximo
+            expansionRate: 0.8,    // Crecimiento
+            fadeSpeed: 0.002,      // Desvanecimiento (ciclo de las manchas)
+            blurAmount: '95px',    // Difuminado muy alto
+            blendMode: 'multiply', // Fusión ideal para fondos blancos/claros
+            initialAlpha: 0.22,    // Opacidad baja (translúcido)
+            idleTimeout: 400,      // ms sin movimiento para congelar
+            poolSize: 5,           // Manchas que forman la zona degradada
+            spread: 180            // Dispersión de la zona alrededor del cursor
+        };
+
+        // Esperar a que el DOM cargue
+        window.addEventListener('DOMContentLoaded', initHeroBackground);
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initHeroBackground();
+        }
+
+        function initHeroBackground() {
+            // 1. Encontrar el contenedor #hero (buscando hacia arriba en el DOM o por ID)
+            const scriptTag = document.currentScript;
+            const hero = scriptTag ? scriptTag.closest('#hero') : document.getElementById('hero');
+
+            if (!hero) {
+                console.warn('Canvas Background: No se encontró el contenedor con ID "hero".');
+                return;
+            }
+
+            // Si ya existe un canvas previo en esta sesión, evitar duplicar
+            if (hero.querySelector('.canvas-hero-background')) return;
+
+            // 2. Crear dinámicamente el Canvas y MOVERLO a la raíz del contenedor #hero
+            const canvas = document.createElement('canvas');
+            canvas.className = 'canvas-hero-background';
+            hero.insertBefore(canvas, hero.firstChild); // Se coloca al principio de #hero
+
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let isIdle = true;          // Al cargar, la zona aparece estática en el centro
+            let lastMoveTime = Date.now();
+
+            // Punto de referencia de la zona degradada (dónde está "anclada")
+            const anchor = { x: 0, y: 0, tx: 0, ty: 0 };
+
+            // Redimensionar el lienzo según el tamaño total de #hero
+            function resizeCanvas() {
+                canvas.width = hero.clientWidth;
+                canvas.height = hero.clientHeight;
+            }
+
+            // Clase para las manchas de color
+            class SoftShape {
+                constructor() {
+                    this.offsetX = (Math.random() - 0.5) * CONFIG.spread;
+                    this.offsetY = (Math.random() - 0.5) * CONFIG.spread;
+                    this.size = Math.random() * (CONFIG.maxBaseSize - CONFIG.minBaseSize) + CONFIG.minBaseSize;
+                    this.alpha = CONFIG.initialAlpha;
+                    this.colorShift = (Math.random() - 0.5) * 0.16; // Sutil variación de tono por mancha
+                    this.x = anchor.x + this.offsetX;
+                    this.y = anchor.y + this.offsetY;
+                }
+
+                update() {
+                    if (isIdle) return; // Congelado: la zona se queda tal cual
+
+                    // Seguir suavemente el ancla (y con ello al cursor)
+                    this.x += (anchor.x + this.offsetX - this.x) * 0.12;
+                    this.y += (anchor.y + this.offsetY - this.y) * 0.12;
+                }
+
+                draw() {
+                    if (this.alpha <= 0) return;
+
+                    // De rosa (izquierda) a lila (derecha) según la posición de la zona
+                    const t = Math.max(0, Math.min(1, anchor.x / canvas.width + this.colorShift));
+                    const r = Math.round(CONFIG.startColor[0] + (CONFIG.endColor[0] - CONFIG.startColor[0]) * t);
+                    const g = Math.round(CONFIG.startColor[1] + (CONFIG.endColor[1] - CONFIG.startColor[1]) * t);
+                    const b = Math.round(CONFIG.startColor[2] + (CONFIG.endColor[2] - CONFIG.startColor[2]) * t);
+                    const color = `rgba(${r}, ${g}, ${b}, `;
+
+                    ctx.save();
+                    ctx.beginPath();
+                    const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                    grad.addColorStop(0, color + (this.alpha) + ')');
+                    grad.addColorStop(0.5, color + (this.alpha * 0.5) + ')');
+                    grad.addColorStop(1, color + '0)');
+
+                    ctx.fillStyle = grad;
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            // Apuntar la zona degradada al cursor
+            function handlePointerMove(e) {
+                const rect = hero.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                anchor.tx = x;
+                anchor.ty = y;
+                lastMoveTime = Date.now();
+                if (isIdle) {
+                    isIdle = false;
+                }
+            }
+
+            // Al salir del contenedor, la zona se queda estática en la última posición
+            function freeze() {
+                isIdle = true;
+            }
+
+            // Eventos
+            hero.addEventListener('mousemove', handlePointerMove);
+            hero.addEventListener('touchmove', (e) => {
+                if (e.touches.length > 0) {
+                    handlePointerMove(e.touches[0]);
+                }
+            }, { passive: true });
+            hero.addEventListener('mouseleave', freeze);
+            hero.addEventListener('touchend', freeze);
+            hero.addEventListener('touchcancel', freeze);
+
+            window.addEventListener('resize', resizeCanvas);
+
+            // Bucle de renderizado
+            function animate() {
+                if (!isIdle && Date.now() - lastMoveTime > CONFIG.idleTimeout) {
+                    isIdle = true;
+                }
+
+                // La zona se desplaza más rápido hacia el cursor
+                anchor.x += (anchor.tx - anchor.x) * 0.18;
+                anchor.y += (anchor.ty - anchor.y) * 0.18;
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.globalCompositeOperation = CONFIG.blendMode;
+                ctx.filter = `blur(${CONFIG.blurAmount})`;
+
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+                requestAnimationFrame(animate);
+            }
+
+            resizeCanvas();
+
+            // Zona degradada inicial: más a la izquierda
+            anchor.x = anchor.tx = canvas.width * 0.2;
+            anchor.y = anchor.ty = canvas.height / 2;
+            for (let i = 0; i < CONFIG.poolSize; i++) {
+                particles.push(new SoftShape());
+            }
+
+            animate();
+        }
+    })();
+</script>

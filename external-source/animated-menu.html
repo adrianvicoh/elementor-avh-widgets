@@ -1,0 +1,199 @@
+<style>
+    /* 1. ASEGURAR QUE EL WIDGET DEL MENÚ PUEDA CONTENER EL CANVAS */
+    #animated-menu {
+        position: relative !important;
+    }
+
+    /* 2. ACOPLAR EL CANVAS AL MENÚ, EXTENDIDO ALREDEDOR PARA QUE EL GLOW NO SE RECORTE */
+    .canvas-menu-background {
+        position: absolute !important;
+        top: -90px !important;
+        left: -90px !important;
+        width: calc(100% + 180px) !important;
+        height: calc(100% + 180px) !important;
+        pointer-events: none !important;
+        /* Permite clics en los enlaces del menú */
+        z-index: 0 !important;
+        /* Queda detrás de la lista */
+    }
+
+    /* 3. COLOCAR EL CONTENIDO Y ENLACES POR ENCIMA DEL CANVAS */
+    #animated-menu > .elementor-widget-container,
+    #animated-menu > *:not(.canvas-menu-background) {
+        position: relative;
+        z-index: 1;
+    }
+</style>
+
+<script>
+    (function () {
+        // Ajustes del efecto (menú: zona pequeña, constante y que sigue el hover)
+        const CONFIG = {
+            startColor: [150, 220, 150], // Verde claro (izquierda)
+            endColor: [90, 180, 100],    // Verde medio (a medida que avanza a la derecha)
+            minBaseSize: 40,      // Tamaño mínimo (más pequeño que el hero)
+            maxBaseSize: 90,      // Tamaño máximo
+            blurAmount: '22px',   // Difuminado acorde al tamaño
+            blendMode: 'multiply',// Fusión ideal para fondos blancos/claros
+            initialAlpha: 0.28,   // Opacidad fija (persistente, sin pulsos)
+            poolSize: 4,          // Manchas que forman la zona
+            spread: 26,           // Dispersión alrededor del ancla
+            pad: 90,              // Píxeles extra alrededor del menú (evita recortes)
+            offsetX: -14,         // Cuánto sobresale la zona respecto al item
+            followSpeed: 0.18     // Velocidad de seguimiento entre items
+        };
+
+        // Esperar a que el DOM cargue
+        window.addEventListener('DOMContentLoaded', initMenuBackground);
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initMenuBackground();
+        }
+
+        function initMenuBackground() {
+            // 1. Encontrar el contenedor del menú (ID de Elementor)
+            const menu = document.getElementById('animated-menu');
+
+            if (!menu) {
+                console.warn('Animated Menu: No se encontró el contenedor con ID "animated-menu".');
+                return;
+            }
+
+            // Si ya existe un canvas previo en esta sesión, evitar duplicar
+            if (menu.querySelector('.canvas-menu-background')) return;
+
+            // 2. Crear dinámicamente el Canvas y MOVERLO a la raíz del menú
+            const canvas = document.createElement('canvas');
+            canvas.className = 'canvas-menu-background';
+            menu.insertBefore(canvas, menu.firstChild); // Se coloca al principio de #animated-menu
+
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            let isIdle = true; // Hasta que el cursor pase por un item, se queda en la posición inicial
+            let hoveredItem = null;
+
+            // Punto de referencia de la zona degradada
+            const anchor = { x: 0, y: 0, tx: 0, ty: 0 };
+
+            // Redimensionar el lienzo según el tamaño total del menú
+            function resizeCanvas() {
+                canvas.width = menu.clientWidth + CONFIG.pad * 2;
+                canvas.height = menu.clientHeight + CONFIG.pad * 2;
+            }
+
+            // Clase para las manchas de color
+            class SoftShape {
+                constructor() {
+                    this.offsetX = (Math.random() - 0.5) * CONFIG.spread;
+                    this.offsetY = (Math.random() - 0.5) * CONFIG.spread;
+                    this.size = Math.random() * (CONFIG.maxBaseSize - CONFIG.minBaseSize) + CONFIG.minBaseSize;
+                    this.alpha = CONFIG.initialAlpha;
+                    this.colorShift = (Math.random() - 0.5) * 0.16; // Sutil variación de tono por mancha
+                    this.x = anchor.x + this.offsetX;
+                    this.y = anchor.y + this.offsetY;
+                }
+
+                update() {
+                    if (isIdle) return; // Congelado: la zona se queda tal cual
+
+                    // Seguir suavemente el ancla (y con ello al item en hover)
+                    this.x += (anchor.x + this.offsetX - this.x) * 0.12;
+                    this.y += (anchor.y + this.offsetY - this.y) * 0.12;
+                }
+
+                draw() {
+                    if (this.alpha <= 0) return;
+
+                    // De rosa (izquierda) a lila (derecha) según la posición de la zona
+                    const t = Math.max(0, Math.min(1, anchor.x / canvas.width + this.colorShift));
+                    const r = Math.round(CONFIG.startColor[0] + (CONFIG.endColor[0] - CONFIG.startColor[0]) * t);
+                    const g = Math.round(CONFIG.startColor[1] + (CONFIG.endColor[1] - CONFIG.startColor[1]) * t);
+                    const b = Math.round(CONFIG.startColor[2] + (CONFIG.endColor[2] - CONFIG.startColor[2]) * t);
+                    const color = `rgba(${r}, ${g}, ${b}, `;
+
+                    ctx.save();
+                    ctx.beginPath();
+                    const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
+                    grad.addColorStop(0, color + (this.alpha) + ')');
+                    grad.addColorStop(0.5, color + (this.alpha * 0.5) + ')');
+                    grad.addColorStop(1, color + '0)');
+
+                    ctx.fillStyle = grad;
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            // Calcular el punto de anclaje a la izquierda de un item del menú
+            function getAnchorForItem(item) {
+                const rect = item.getBoundingClientRect();
+                const canvasRect = canvas.getBoundingClientRect();
+                return {
+                    tx: rect.left - canvasRect.left + CONFIG.offsetX,
+                    ty: rect.top - canvasRect.top + rect.height / 2
+                };
+            }
+
+            // Mover la zona degradada al item en hover
+            function moveTo(item) {
+                const a = getAnchorForItem(item);
+                anchor.tx = a.tx;
+                anchor.ty = a.ty;
+                hoveredItem = item;
+                if (isIdle) {
+                    isIdle = false;
+                }
+            }
+
+            // Asociar el hover a cada enlace del menú principal de Elementor
+            const items = menu.querySelectorAll('.elementor-nav-menu--main .menu-item > a');
+            items.forEach(function (item) {
+                item.addEventListener('mouseenter', function () {
+                    moveTo(item);
+                });
+            });
+
+            // Al salir del menú, la zona se queda estática en el último item
+            menu.addEventListener('mouseleave', function () {
+                isIdle = true;
+            });
+
+            window.addEventListener('resize', resizeCanvas);
+
+            // Bucle de renderizado
+            function animate() {
+                if (!isIdle) {
+                    // La zona se desplaza suavemente hacia el item en hover
+                    anchor.x += (anchor.tx - anchor.x) * CONFIG.followSpeed;
+                    anchor.y += (anchor.ty - anchor.y) * CONFIG.followSpeed;
+                }
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.globalCompositeOperation = CONFIG.blendMode;
+                ctx.filter = `blur(${CONFIG.blurAmount})`;
+
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+                requestAnimationFrame(animate);
+            }
+
+            resizeCanvas();
+
+            // Posición inicial: a la izquierda del primer item del menú
+            const first = items[0];
+            if (first) {
+                const a = getAnchorForItem(first);
+                anchor.x = anchor.tx = a.tx;
+                anchor.y = anchor.ty = a.ty;
+            }
+
+            for (let i = 0; i < CONFIG.poolSize; i++) {
+                particles.push(new SoftShape());
+            }
+
+            animate();
+        }
+    })();
+</script>

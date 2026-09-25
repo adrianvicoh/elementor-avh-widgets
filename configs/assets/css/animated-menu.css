@@ -1,0 +1,25 @@
+.avh-animated-menu--yes {
+	--avh-animated-menu-start-color: #96dc96;
+	--avh-animated-menu-end-color: #5ab464;
+	--avh-animated-menu-extension: 100%;
+	--avh-animated-menu-blur: 22px;
+	--avh-animated-menu-speed: 0.18;
+	--avh-animated-menu-pad: 90px;
+	isolation: isolate;
+	position: relative !important;
+}
+
+.avh-animated-menu__canvas {
+	height: calc(100% + (var(--avh-animated-menu-pad) * 2)) !important;
+	left: calc(var(--avh-animated-menu-pad) * -1) !important;
+	pointer-events: none !important;
+	position: absolute !important;
+	top: calc(var(--avh-animated-menu-pad) * -1) !important;
+	width: calc(100% + (var(--avh-animated-menu-pad) * 2)) !important;
+	z-index: 0 !important;
+}
+
+.avh-animated-menu--yes > :not(.avh-animated-menu__canvas) {
+	position: relative;
+	z-index: 1;
+}

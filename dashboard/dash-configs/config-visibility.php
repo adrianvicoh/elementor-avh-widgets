@@ -23,6 +23,16 @@ function elementor_avh_get_available_configs(): array {
 			'description' => esc_html__( 'Adds configurable animated border controls to Elementor elements that support borders.', 'custom-elementor-widgets' ),
 			'icon'        => 'eicon-animation',
 		],
+		'animated-background' => [
+			'title'       => esc_html__( 'Animated Background', 'custom-elementor-widgets' ),
+			'description' => esc_html__( 'Adds soft, configurable gradient backgrounds to Elementor elements that support backgrounds.', 'custom-elementor-widgets' ),
+			'icon'        => 'eicon-background',
+		],
+		'animated-menu' => [
+			'title'       => esc_html__( 'Animated Menu Background', 'custom-elementor-widgets' ),
+			'description' => esc_html__( 'Adds a configurable soft gradient background to Elementor Nav Menu widgets.', 'custom-elementor-widgets' ),
+			'icon'        => 'eicon-nav-menu',
+		],
 	];
 }
 

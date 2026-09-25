@@ -18,6 +18,14 @@ if ( elementor_avh_is_config_enabled( 'border-beam' ) ) {
 	require_once __DIR__ . '/configs/border-beam.php';
 }
 
+if ( elementor_avh_is_config_enabled( 'animated-background' ) ) {
+	require_once __DIR__ . '/configs/animated-background.php';
+}
+
+if ( elementor_avh_is_config_enabled( 'animated-menu' ) ) {
+	require_once __DIR__ . '/configs/animated-menu.php';
+}
+
 // Swiper 11 CDN constants used by the Coverflow Slider.
 if ( ! defined( 'SWIPER_CDN_VERSION' ) ) {
 	define( 'SWIPER_CDN_VERSION', '11.0.5' );

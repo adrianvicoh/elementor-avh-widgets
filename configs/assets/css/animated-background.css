@@ -1,0 +1,24 @@
+.avh-animated-background--yes {
+	--avh-animated-background-start-color: #ff96c8;
+	--avh-animated-background-end-color: #cdaaff;
+	--avh-animated-background-extension: 100%;
+	--avh-animated-background-blur: 95px;
+	--avh-animated-background-speed: 0.18;
+	isolation: isolate;
+	overflow: hidden;
+	position: relative !important;
+}
+
+.avh-animated-background__canvas {
+	height: 100% !important;
+	inset: 0 !important;
+	pointer-events: none !important;
+	position: absolute !important;
+	width: 100% !important;
+	z-index: 0 !important;
+}
+
+.avh-animated-background--yes > :not(.avh-animated-background__canvas) {
+	position: relative;
+	z-index: 1;
+}
