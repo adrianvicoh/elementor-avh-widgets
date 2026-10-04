@@ -264,6 +264,21 @@
 		saturate(var(--avh-beam-saturation, var(--avh-beam-saturation-preset, 1.2)));
 }
 
+.avh-border-beam-type-md-outside .avh-border-beam__stroke {
+	inset: -2px;
+	padding: 2px;
+}
+
+.avh-border-beam-type-md-outside .avh-border-beam__inner {
+	inset: -4px;
+	padding: 4px;
+}
+
+.avh-border-beam-type-md-outside .avh-border-beam__bloom {
+	inset: -9px;
+	padding: 9px;
+}
+
 .avh-border-beam-type-line .avh-border-beam__effect {
 	animation: avh-border-beam-hue 8s ease-in-out infinite;
 }
@@ -411,8 +426,10 @@
 
 .avh-border-beam-static-yes.avh-border-beam-type-sm .avh-border-beam__effect,
 .avh-border-beam-static-yes.avh-border-beam-type-md .avh-border-beam__effect,
+.avh-border-beam-static-yes.avh-border-beam-type-md-outside .avh-border-beam__effect,
 .avh-border-beam-color-mono.avh-border-beam-type-sm .avh-border-beam__effect,
-.avh-border-beam-color-mono.avh-border-beam-type-md .avh-border-beam__effect {
+.avh-border-beam-color-mono.avh-border-beam-type-md .avh-border-beam__effect,
+.avh-border-beam-color-mono.avh-border-beam-type-md-outside .avh-border-beam__effect {
 	--avh-beam-hue: 0deg;
 	animation: avh-border-beam-angle var(--avh-beam-duration, var(--avh-beam-duration-preset, 1.96s)) linear infinite;
 }

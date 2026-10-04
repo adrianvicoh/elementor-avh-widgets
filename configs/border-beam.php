@@ -64,6 +64,7 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 			'options'            => [
 				'sm'            => esc_html__( 'Compact rotation', 'custom-elementor-widgets' ),
 				'md'            => esc_html__( 'Full border rotation', 'custom-elementor-widgets' ),
+				'md-outside'    => esc_html__( 'Full border rotation (outside)', 'custom-elementor-widgets' ),
 				'line'          => esc_html__( 'Bottom traveling line', 'custom-elementor-widgets' ),
 				'pulse-inner'   => esc_html__( 'Inner pulse', 'custom-elementor-widgets' ),
 				'pulse-outside' => esc_html__( 'Outside pulse', 'custom-elementor-widgets' ),
@@ -223,11 +224,11 @@ function elementor_avh_add_border_beam_controls( $element ): void {
 		'avh_border_beam_outside_notice',
 		[
 			'type'            => \Elementor\Controls_Manager::RAW_HTML,
-			'raw'             => esc_html__( 'Outside pulse needs visible overflow around the element. Parent overflow settings can clip the halo.', 'custom-elementor-widgets' ),
+			'raw'             => esc_html__( 'Outside effects need visible overflow around the element. Parent overflow settings can clip the halo.', 'custom-elementor-widgets' ),
 			'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
 			'condition'       => [
 				'avh_border_beam_enabled' => 'yes',
-				'avh_border_beam_type'    => 'pulse-outside',
+				'avh_border_beam_type'    => [ 'pulse-outside', 'md-outside' ],
 			],
 		]
 	);

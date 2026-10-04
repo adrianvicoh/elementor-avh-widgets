@@ -37,7 +37,7 @@ loads its assets when enabled:
 
   Available options:
 
-  - **Effect type**: Compact rotation (`sm`), Full border rotation (`md`),
+  - **Effect type**: Compact rotation (`sm`), Full border rotation (`md`), Full border rotation outside (`md-outside`),
     Bottom traveling line (`line`), Inner pulse (`pulse-inner`), Outside pulse (`pulse-outside`)
   - **Color palette**: Colorful, Monochrome, Ocean, Sunset
   - **Background theme**: Dark, Light, System preference (auto)
