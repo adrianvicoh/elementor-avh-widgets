@@ -17,10 +17,10 @@ The plugin is split in two kinds of features, both manageable from the plugin da
 
 New standalone widgets, registered in the **Custom Elementor Widgets** category:
 
-- **Coverflow Slider** — basado en el [tutorial de DMmotionarts](https://dmmotionarts.com/coverflow-slider-carousel-elementor-swiperjs-slider-tutorial/),
-  que configura el efecto Coverflow de SwiperJS con bucle, navegación/paginación y breakpoints responsive; adaptado como widget de Elementor.
-  La [plantilla original gratuita de sliders](https://dmmotionarts.com/product/custom-sliders-carousels-elementor-free-template/) permite obtener el source;
-  el tutorial y la ficha no especifican licencia de reutilización o redistribución. Este widget carga Swiper 11 desde CDN con SRI y `crossorigin`.
+- **Coverflow Slider** — based on the [DMmotionarts tutorial](https://dmmotionarts.com/coverflow-slider-carousel-elementor-swiperjs-slider-tutorial/),
+  which sets up the SwiperJS Coverflow effect with looping, navigation/pagination and responsive breakpoints; adapted as an Elementor widget.
+  The source can be obtained from the [original free slider template](https://dmmotionarts.com/product/custom-sliders-carousels-elementor-free-template/);
+  neither the tutorial nor the product page specifies a reuse or redistribution license. This widget loads Swiper 11 from a CDN with SRI and `crossorigin`.
 - **Toggle Content** — button that shows/hides a WYSIWYG content block, with styling
   controls for the button and the content alignment.
 
