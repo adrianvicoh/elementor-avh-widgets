@@ -55,11 +55,7 @@ license of every third-party work the plugin uses.
 
 ## Next steps
 
-1. Test both widgets manually in a WordPress site with Elementor: frontend and
-   editor preview (change controls to trigger rerenders), mouse/touch drag
-   containment, keyboard arrow movement, and each chart type. Also confirm
-   Animated Border Beam still renders after its header comment was added.
-2. Optionally record the border-beam upstream commit in
+1. Optionally record the border-beam upstream commit in
    `THIRD-PARTY-NOTICES.md`; the local copy is a `main` download at 1.4.0
    and its commit was never recorded.
 
@@ -76,7 +72,8 @@ license of every third-party work the plugin uses.
   interactable, out-of-bounds boxes are clamped, and arrow keys move a box.
   A real mouse drag was not tested.
 - `git diff --check` passed.
-- No local WordPress was available (Docker was not running).
+- The user tested the widgets manually in a WordPress site with Elementor after
+  commit `f7cbc35`; everything worked.
 
 ## Constraints
 
