@@ -1,0 +1,57 @@
+.elementor-widget-draggable-boxes .draggable-boxes__instructions,
+.elementor-widget-draggable-boxes .draggable-boxes__status {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.elementor-widget-draggable-boxes .draggable-boxes__canvas {
+	position: relative;
+	width: 100%;
+	height: 480px;
+	overflow: hidden;
+	border: 1px solid currentColor;
+	border-radius: 12px;
+}
+
+.elementor-widget-draggable-boxes .draggable-boxes__item {
+	position: absolute;
+	box-sizing: border-box;
+	width: 220px;
+	margin: 0;
+	padding: 20px;
+	color: var(--draggable-boxes-color);
+	background: var(--draggable-boxes-background);
+	border-radius: 12px;
+	box-shadow: 0 12px 28px rgb(0 0 0 / 18%);
+	cursor: grab;
+	touch-action: none;
+	user-select: none;
+	will-change: transform;
+}
+
+.elementor-widget-draggable-boxes .draggable-boxes__item:focus-visible {
+	outline: 3px solid currentColor;
+	outline-offset: 3px;
+}
+
+.elementor-widget-draggable-boxes .draggable-boxes__item.is-dragging {
+	cursor: grabbing;
+	z-index: 1;
+}
+
+.elementor-widget-draggable-boxes .draggable-boxes__title,
+.elementor-widget-draggable-boxes .draggable-boxes__content {
+	margin: 0;
+	color: inherit;
+}
+
+.elementor-widget-draggable-boxes .draggable-boxes__title + .draggable-boxes__content {
+	margin-top: 8px;
+}

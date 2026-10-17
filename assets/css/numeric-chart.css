@@ -1,0 +1,11 @@
+.elementor-widget-numeric-chart .numeric-chart__canvas-wrap {
+	position: relative;
+	width: 100%;
+	height: 360px;
+}
+
+.elementor-widget-numeric-chart .numeric-chart__canvas {
+	display: block;
+	width: 100% !important;
+	height: 100% !important;
+}

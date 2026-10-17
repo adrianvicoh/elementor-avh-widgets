@@ -37,6 +37,20 @@ function elementor_avh_get_available_widgets(): array {
 			'class'       => 'Toggle_Content',
 			'file'        => $plugin_root . '/widgets/toggle-content.php',
 		],
+		'draggable-boxes' => [
+			'title'       => esc_html__( 'Draggable Boxes', 'custom-elementor-widgets' ),
+			'description' => esc_html__( 'Freely moveable boxes with mouse, touch, and keyboard controls.', 'custom-elementor-widgets' ),
+			'icon'        => 'eicon-drag-n-drop',
+			'class'       => 'Draggable_Boxes',
+			'file'        => $plugin_root . '/widgets/draggable-boxes.php',
+		],
+		'numeric-chart' => [
+			'title'       => esc_html__( 'Numeric Chart', 'custom-elementor-widgets' ),
+			'description' => esc_html__( 'Configurable bar, line, and doughnut charts from numeric data.', 'custom-elementor-widgets' ),
+			'icon'        => 'eicon-skill-bar',
+			'class'       => 'Numeric_Chart',
+			'file'        => $plugin_root . '/widgets/numeric-chart.php',
+		],
 	];
 }
 

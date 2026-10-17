@@ -42,6 +42,18 @@ if ( ! defined( 'SWIPER_CDN_CSS_SRI' ) ) {
 if ( ! defined( 'SWIPER_CDN_JS_SRI' ) ) {
 	define( 'SWIPER_CDN_JS_SRI', 'sha512-Ysw1DcK1P+uYLqprEAzNQJP+J4hTx4t/3X2nbVwszao8wD+9afLjBQYjz7Uk4ADP+Er++mJoScI42ueGtQOzEA==' );
 }
+if ( ! defined( 'INTERACTJS_VERSION' ) ) {
+	define( 'INTERACTJS_VERSION', '1.10.27' );
+}
+if ( ! defined( 'INTERACTJS_URL' ) ) {
+	define( 'INTERACTJS_URL', plugins_url( '/assets/vendor/interactjs-1.10.27.min.js', __FILE__ ) );
+}
+if ( ! defined( 'CHARTJS_VERSION' ) ) {
+	define( 'CHARTJS_VERSION', '4.5.1' );
+}
+if ( ! defined( 'CHARTJS_URL' ) ) {
+	define( 'CHARTJS_URL', plugins_url( '/assets/vendor/chart.js-4.5.1.umd.min.js', __FILE__ ) );
+}
 
 /**
  * Register Elementor widgets.
@@ -111,6 +123,10 @@ function elementor_widgets_dependencies()
 	$cf_style = $base . '/assets/css/coverflow-slider.css';
 	$toggle_script = $base . '/assets/js/toggle-content.js';
 	$toggle_style = $base . '/assets/css/toggle-content.css';
+	$draggable_boxes_script = $base . '/assets/js/draggable-boxes.js';
+	$draggable_boxes_style = $base . '/assets/css/draggable-boxes.css';
+	$numeric_chart_script = $base . '/assets/js/numeric-chart.js';
+	$numeric_chart_style = $base . '/assets/css/numeric-chart.css';
 
 	wp_register_style(
 		'coverflow-slider-widget-style',
@@ -141,6 +157,52 @@ function elementor_widgets_dependencies()
 		file_exists($toggle_script) ? filemtime($toggle_script) : false,
 		true
 	);
+
+	wp_register_script(
+		'draggable-boxes-interact',
+		INTERACTJS_URL,
+		[],
+		INTERACTJS_VERSION,
+		true
+	);
+
+	wp_register_style(
+		'draggable-boxes-widget-style',
+		plugins_url('/assets/css/draggable-boxes.css', __FILE__),
+		[],
+		file_exists($draggable_boxes_style) ? filemtime($draggable_boxes_style) : false
+	);
+
+	wp_register_script(
+		'draggable-boxes-widget-script',
+		plugins_url('/assets/js/draggable-boxes.js', __FILE__),
+		[ 'draggable-boxes-interact' ],
+		file_exists($draggable_boxes_script) ? filemtime($draggable_boxes_script) : false,
+		true
+	);
+
+	wp_register_script(
+		'numeric-chart-chartjs',
+		CHARTJS_URL,
+		[],
+		CHARTJS_VERSION,
+		true
+	);
+
+	wp_register_style(
+		'numeric-chart-widget-style',
+		plugins_url('/assets/css/numeric-chart.css', __FILE__),
+		[],
+		file_exists($numeric_chart_style) ? filemtime($numeric_chart_style) : false
+	);
+
+	wp_register_script(
+		'numeric-chart-widget-script',
+		plugins_url('/assets/js/numeric-chart.js', __FILE__),
+		[ 'numeric-chart-chartjs' ],
+		file_exists($numeric_chart_script) ? filemtime($numeric_chart_script) : false,
+		true
+	);
 }
 add_action('wp_enqueue_scripts', 'elementor_widgets_dependencies');
 add_action('elementor/frontend/after_register_scripts', 'elementor_widgets_dependencies', 20);
@@ -162,6 +224,18 @@ function enqueue_editor_widget_styles()
 		&& wp_style_is( 'toggle-content-widget-style', 'registered' )
 	) {
 		wp_enqueue_style( 'toggle-content-widget-style' );
+	}
+	if (
+		elementor_avh_is_widget_enabled( 'draggable-boxes' )
+		&& wp_style_is( 'draggable-boxes-widget-style', 'registered' )
+	) {
+		wp_enqueue_style( 'draggable-boxes-widget-style' );
+	}
+	if (
+		elementor_avh_is_widget_enabled( 'numeric-chart' )
+		&& wp_style_is( 'numeric-chart-widget-style', 'registered' )
+	) {
+		wp_enqueue_style( 'numeric-chart-widget-style' );
 	}
 }
 add_action('elementor/editor/after_enqueue_styles', 'enqueue_editor_widget_styles');
